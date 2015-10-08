@@ -1,0 +1,8 @@
+SDO Point in Dorf + Distance Funct. (Hansi)
+Prozedur: Angriff Bew Event mit flavour Angriff. Speed wichtig (Zeiringer)
+Movable aufsplitten (Millonig)
+Angriff resolve (Notsch) 
+Looting (Notsch)
+Auto-Increment (flavour) (Zeiringer)
+Creates [Create Truppe/Ress usw Prozedur] (Millonig)
+Changes Dorf (Millonig)
