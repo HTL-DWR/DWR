@@ -1,10 +1,22 @@
-SDO Point in Dorf + Distance Funct. (Hansi)
-Prozedur: Angriff Bew Event mit flavour Angriff. Speed wichtig (Zeiringer)
-Movable aufsplitten (Millonig)
-Angriff resolve (Notsch) 
-Looting (Notsch)
-Auto-Increment (flavour) (Zeiringer)
-Creates [Create Truppe/Ress usw Prozedur] (Millonig)
-Changes Dorf (Millonig)
-stat Event bau resolve (Hansi)
-stat Event truppen resolve (Hansi)
+ [   ] SDO Point in Dorf + Distance Funct. (Hansi)
+ [   ] Prozedur: Angriff Bew Event mit flavour Angriff. Speed wichtig (Zeiringer) ....sollte auf mein create_event warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
+ [   ] Movable aufsplitten (Millonig)
+ [   ] Angriff resolve (Notsch) .................................................sollte auf truppen herausnehmen warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
+ [   ] Looting (Notsch)..................................................habe in stämme.sql etwas ähnliches
+ [   ] Auto-Increment (flavour) (Zeiringer)
+       [ X ] Movable
+       [   ] Clan
+       [   ] Board
+       [   ] kommentar
+       [   ] dorf
+       [   ] geb_typ
+       [   ] event
+       [   ] 
+ [   ] Creates [Create Truppe/Ress usw Prozedur] (Millonig)
+       [ X ] Truppe
+       [ X ] Resource
+       [   ] Event
+ [ ~ ] Changes Dorf (Millonig)
+ [   ] stat Event bau resolve (Hansi)     ....sollte auf mein create_event warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
+ [   ] stat Event truppen resolve (Hansi) ....................................................habe in stämme.sql eine hilfe
+ [ X ] Update_all_resources umschreiben wegen dyn. häusern (Millonig)
