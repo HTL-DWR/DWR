@@ -48,8 +48,9 @@ last_res_update timestamp
 
 create table geb_typ(
 id number primary key,
+base_buildtime number,
 name varchar2(20)
-);
+); --build time = base_buildtime * (lvl+1) * 1.75
 
 
 create table bau(

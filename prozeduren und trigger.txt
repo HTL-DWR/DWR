@@ -167,3 +167,86 @@ BEGIN
   end if;
   
 END is_in_past;
+
+-------------------------------------------------------------
+create or replace function CREATE_bew_event 
+(
+dauer in number,
+von_dorf in number,
+nach_dorf in number,
+cargo in number,
+art in varchar2
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+BEGIN
+
+  x:=-1;
+  select COUNT(*) into istruppe from truppe where id=cargo;
+  select COUNT(*) into rescnt from resgruppe where id=cargo;
+  if ( istruppe = 1 AND (art='sup' or art='atk') )or (istruppe = 0 and art='res' and 1=rescnt  ) then
+     x :=event_id.nextval;
+     insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+     insert into bew_event(id,von_dorf,nach_dorf,cargo,art) values (x,von_dorf,nach_dorf,cargo,art);
+  else 
+    DBMS_OUTPUT.PUT_LINE('Resource/Truppe Type missmatch or cargo does not exist');
+  end if;
+  
+ 
+  return x;
+END CREATE_bew_event;
+-------------------------------------------------------
+create or replace function CREATE_geb_bau
+(
+dorf in number,
+geb_typ number
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+dauer number;
+bbt number;
+cur_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  select base_buildtime into bbt from geb_typ where id=geb_typ;
+  select lvl into cur_lvl from bau b where b.DID=dorf and b.TID=geb_typ;
+  dauer := bbt * (cur_lvl+1) * 1.75;
+  
+  x :=event_id.nextval;
+  insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+  insert into stat_event(id,dorf,geb_typ) values (x,dorf,GEB_TYP);
+  return x;
+END CREATE_geb_bau;
+--------------------------------------------------------
+create or replace function CREATE_Truppenausbildung
+(
+pdorf in number,
+pcargo number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  select t.lanze*30+t.reiter*180 +t.schwert*120 +bogen*60 into r_dauer from truppe t where t.id=pcargo;
+  select NVL(lvl,0) into k_lvl from bau where TID='kasserne' and DID=pdorf;
+  if k_lvl=0 then
+    x :=-1;
+  else
+  dauer := (r_dauer*1)/(k_lvl*1.5);
+    x :=event_id.nextval;
+    insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+    insert into stat_event(id,cargo) values (x,pcargo);
+    end if;
+  return x;
+END CREATE_Truppenausbildung;
