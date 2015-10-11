@@ -2,21 +2,20 @@
  [   ] Prozedur: Angriff Bew Event mit flavour Angriff. Speed wichtig (Zeiringer) ....sollte auf mein create_event warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
  [   ] Movable aufsplitten (Millonig)
  [   ] Angriff resolve (Notsch) .................................................sollte auf truppen herausnehmen warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
- [   ] Looting (Notsch)..................................................habe in st‰mme.sql etwas ‰hnliches
- [   ] Auto-Increment (flavour) (Zeiringer)
+ [   ] Looting (Notsch)..................................................habe in st√§mme.sql etwas √§hnliches
+ [ X ] Auto-Increment (flavour) (Zeiringer)
        [ X ] Movable
-       [   ] Clan
-       [   ] Board
-       [   ] kommentar
-       [   ] dorf
-       [   ] geb_typ
-       [   ] event
-       [   ] 
+       [ X ] Clan
+       [ X ] Board
+       [ X ] kommentar
+       [ X ] dorf
+       [ X ] geb_typ
+       [ X ] event
  [   ] Creates [Create Truppe/Ress usw Prozedur] (Millonig)
        [ X ] Truppe
        [ X ] Resource
        [   ] Event
  [ ~ ] Changes Dorf (Millonig)
  [   ] stat Event bau resolve (Hansi)     ....sollte auf mein create_event warten (bzw halt benutzen ohne das es es gibt)(muss ich noch machen)
- [   ] stat Event truppen resolve (Hansi) ....................................................habe in st‰mme.sql eine hilfe
- [ X ] Update_all_resources umschreiben wegen dyn. h‰usern (Millonig)
+ [   ] stat Event truppen resolve (Hansi) ....................................................habe in st√§mme.sql eine hilfe
+ [ X ] Update_all_resources umschreiben wegen dyn. h√§usern (Millonig)
