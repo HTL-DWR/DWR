@@ -1,0 +1,19 @@
+[]Truppen herausnehmen
+[]Resourcen herausnehmen
+[]Java Server (grundgerüst gibs schon) 
+  []thread   (run loop)
+  []db-connect      [Notsch (hat da was)]
+    []event abfrage 
+      []resolve all done
+    []update resource aufruf
+  []xml erstellen
+
+[]select/prozedur "gib dörfer, truppen, uname, ... in diesem bereich"(verwendet hansis distance-funktion) //für java return
+  [] brauchen noch sowas wie hansis distance: gib alles in diesem bereich (mitte, radius) für map darstellen                [Hansi]
+
+[]C# client
+  []daten aus xml laden
+    []geoobject darstellen
+      []daten des dorfes X onclick anzeigen
+  []webservice aufrufen (daher kommt dann das XML)
+  
