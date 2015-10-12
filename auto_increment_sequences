@@ -1,0 +1,45 @@
+----------------------------------------------------------------
+--Sequenzen f¸r Auto-Increment--
+
+--Moveable
+CREATE SEQUENCE moveable_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Clan
+CREATE SEQUENCE clan_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Board
+CREATE SEQUENCE board_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Kommentar
+CREATE SEQUENCE kommentar_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Dorf
+CREATE SEQUENCE dorf_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--geb_typ
+CREATE SEQUENCE geb_typ_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--event
+CREATE SEQUENCE event_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
