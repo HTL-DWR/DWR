@@ -8,6 +8,12 @@ drop table event cascade constraints;
 drop table bew_event cascade constraints;
 drop table stat_event cascade constraints;
 drop SEQUENCE movable_id;
+drop SEQUENCE geb_typ_id;
+drop SEQUENCE dorf_id;
+drop SEQUENCE event_id;
+drop SEQUENCE clan_id;
+drop SEQUENCE board_id;
+drop SEQUENCE kommentar_id;
 drop table geb_typ cascade constraints;
 drop table movable cascade constraints;
 drop table bau cascade constraints;
@@ -67,10 +73,9 @@ did number references dorf(id)
 );
 
 
-CREATE SEQUENCE movable_id
-MINVALUE 1
-START WITH 1
-INCREMENT BY 1;
+
+
+
 
 create table resgruppe(
 id number references Movable(id),
@@ -115,6 +120,56 @@ cargo number references Truppe(id),
 primary key(id)
 );
 
+
+----------------------------------------------------------------
+--Sequenzen f¸r Auto-Increment--
+
+--Moveable
+CREATE SEQUENCE movable_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Clan
+CREATE SEQUENCE clan_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Board
+CREATE SEQUENCE board_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Kommentar
+CREATE SEQUENCE kommentar_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--Dorf
+CREATE SEQUENCE dorf_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+--geb_typ
+CREATE SEQUENCE geb_typ_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+
+--event
+CREATE SEQUENCE event_id
+MINVALUE 1
+START WITH 1
+INCREMENT BY 1;
+
+
+
+
 insert into clan values(1,'devs');
 
 insert into spieler(uname,clan) values('test user1',NULL);
@@ -134,6 +189,8 @@ insert into dorf(id, name, owner, position, last_res_update) values (1,'zweitbes
 ------- Resourcen
 insert into Movable(id,did) values( movable_id.nextval,1);
 insert into RESGRUPPE(id,holz,stein,lehm) values(1,10,100,1000);
+
+
 
 
 --wenn das passiert muss der auto_add trigger anspringen und die beiden resourcengruppen addieren!!!

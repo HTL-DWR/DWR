@@ -1,4 +1,4 @@
-[]Truppen herausnehmen
+[~]Truppen herausnehmen
 []Resourcen herausnehmen
 []Java Server (grundgerüst gibs schon) 
   []thread   (run loop)
