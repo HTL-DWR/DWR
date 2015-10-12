@@ -89,7 +89,7 @@ BEGIN
     END IF;
     update truppe SET schwert=newSchwert, reiter=newReiter, bogen=newBogen, lanze=newLanze where id = TRUPPE;
     --Loot here mehr oder weniger nur new event für alle ressis von dorf 1 move to dorf 2 und truppen wd zurück
-    
+    update truppe SET schwert=0, reiter=0, bogen=0, lanze=0 where id = t_id;
   ELSE
     --umgekehrt
      --all atk truppen werden 0
@@ -138,7 +138,7 @@ BEGIN
       select lanze into tmp from truppe where id = t_id;
       newLanze := tmp;
     END IF;
-    
+    update truppe SET schwert=0, reiter=0, bogen=0, lanze=0 where id = TRUPPE;
     update truppe SET schwert=newSchwert, reiter=newReiter, bogen=newBogen, lanze=newLanze where id = t_id;
   END IF;
   
