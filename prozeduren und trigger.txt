@@ -250,3 +250,24 @@ BEGIN
     end if;
   return x;
 END CREATE_Truppenausbildung;
+-------------------------------------------------------------------------
+create or replace function CREATE_DORF
+(
+name in varchar2,
+owner varchar2,
+x_pos number,
+y_pos number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  x :=dorf_id.nextval;
+  insert into dorf(id,name,owner,location,last_res_update) values(x,name,owner,SDO_GEOMETRY(2001,NULL,SDO_POINT_TYPE(x_pos, y_pos, NULL),NULL,NULL),CURRENT_TIMESTAMP);
+  return x;
+END CREATE_DORF;

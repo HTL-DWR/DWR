@@ -41,7 +41,7 @@ create table dorf(
 id number primary key,
 name varchar2(20),
 owner varchar2(20) references spieler(uname),
-position number,
+location SDO_GEOMETRY,
 last_res_update timestamp
 );
 --hier kommt sdo object
