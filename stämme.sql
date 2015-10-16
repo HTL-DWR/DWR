@@ -181,18 +181,31 @@ insert into spieler values('hansi',1);
 insert into spieler values('tino',1);
 insert into spieler values('alex',1);
 
-insert into dorf(id, name, owner, position, last_res_update) values (0,'urdorf','stefan',0, CURRENT_TIMESTAMP);
-insert into dorf(id, name, owner, position, last_res_update) values (1,'zweitbestes dorf','alex',0,CURRENT_TIMESTAMP);
+--insert into dorf(id, name, owner, position, last_res_update) values (0,'urdorf','stefan',0, CURRENT_TIMESTAMP);
+--insert into dorf(id, name, owner, position, last_res_update) values (1,'zweitbestes dorf','alex',0,CURRENT_TIMESTAMP);
 
 
 
 ------- Resourcen
-insert into Movable(id,did) values( movable_id.nextval,1);
+/*insert into Movable(id,did) values( movable_id.nextval,1);
 insert into RESGRUPPE(id,holz,stein,lehm) values(1,10,100,1000);
+*/
+insert into board(id,name,op) values(board_id.nextval,'testboard','tino');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,1,'hallo tino','stefan');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,1,'das ist mein board geh raus','tino');
+
+insert into board(id,name,op) values(board_id.nextval,'Spamboard','hansi');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,2,'jetzt kaufen! premium hansi coins','hansi');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,2,'mods!!!','tino');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,2,'mods!!!','stefan');
+insert into kommentar(id,board,text,op) values(kommentar_id.nextval,2,'mods!!!','alex');
+
+commit;
+select board.NAME,kommentar.TEXT from board inner join kommentar on board.id=kommentar.board;
 
 
 
-
+select * from kommentar;
 --wenn das passiert muss der auto_add trigger anspringen und die beiden resourcengruppen addieren!!!
 /*
 declare
@@ -223,7 +236,7 @@ end;*/
 
 
 
-declare
+/*declare
 x number;
 begin
 --erstellt ein event (brauch auch noch create funktion
@@ -235,7 +248,7 @@ x := create_resource(10,10,10);
 -- es ist sehr ähnlich wie wenn eine truppe ausgebildet wird, oder ein dorf geplündert wird
 -- wir brauchen eine funktion die eine resourcengruppe aufteilt und eine die eine truppe aufteilt
 insert into bew_event(id,von_dorf,nach_dorf,cargo,art) values(0,0,1,x,'res');
-end;
+end;*/
 --insert into event(id,BEGINN,DAUER) values(2,CURRENT_TIMESTAMP,60);
 --insert into event(id,BEGINN,DAUER) values(3,CURRENT_TIMESTAMP,9999999);
 
@@ -250,7 +263,25 @@ insert into stat_event(id,dorf,cargo) values(3,1,null);
 */
 
 --!!!Bitte Testen!!!--
+
 --wenn wir 15 sekunden so einfügen würden: 15/60/60/24 geht das
 select is_in_past(e.beginn+e.dauer) from event e;
 --wenn wir 15 sekunden so einfügen würden: 15
 select id,is_in_past(e.beginn+e.dauer/60/60/24) from event e;
+select * from dorf;
+
+/*declare 
+x number;
+begin
+x := CREATE_DORF('hansidorf','hansi',1,1);
+x := CREATE_DORF('d1','stefan',1,1);
+x := CREATE_DORF('d2','tino',1,1);
+x := CREATE_DORF('das dorf','alex',1,1);
+x := CREATE_DORF('gawo-galgen','hansi',1,1);
+x := CREATE_DORF('asdf','stefan',1,1);
+x := CREATE_DORF('hansidorf2','hansi',1,1);
+end;*/
+
+select d.name as did, s.uname as owner,t.BOGEN,t.lanze,t.reiter,t.schwert,s.CLAN  from dorf d inner join spieler s on s.uname=d.owner left join movable m on m.did=d.id left join truppe t on t.id=m.id;
+
+select * from dorf d where SDO_CONTAINS(d.location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(2,2,4,6)))='TRUE';
