@@ -1,0 +1,273 @@
+create or replace PROCEDURE UPDATE_RESOURCES AS 
+x number;
+y number;
+td number;
+lehmgrube number;
+holzfaeller number;
+steinmetz number;
+BEGIN
+
+
+
+for eintrag in (select * from RESGRUPPE r inner join movable m on r.id=m.id inner join dorf d on d.id=m.did ) LOOP
+
+select NVL(lvl,0) into lehmgrube from BAU b inner join geb_typ t on t.id=b.tid where t.name='lehmgrube' and b.did=eintrag.did;
+select NVL(lvl,0) into holzfaeller from BAU b inner join geb_typ t on t.id=b.tid where t.name='holzfaeller' and b.did=eintrag.did;
+select NVL(lvl,0) into steinmetz from BAU b inner join geb_typ t on t.id=b.tid where t.name='steinmetz' and b.did=eintrag.did;
+
+
+
+select time_diff(eintrag.last_res_update,CURRENT_TIMESTAMP) into td from dual;
+update resgruppe set  lehm=eintrag.lehm+lehmgrube*3*td,HOLZ=eintrag.holz+holzfaeller*3*td,STEIN=eintrag.stein+steinmetz*3*td where id=eintrag.id;
+update dorf set last_res_update=CURRENT_TIMESTAMP where id=eintrag.did;
+end loop;
+
+for eintrag in (select * from dorf d where id not in (select did from resgruppe r inner join movable m on m.id=r.id )) LOOP
+
+select NVL(lvl,0) into lehmgrube from BAU b inner join geb_typ t on t.id=b.tid where t.name='lehmgrube' and b.did=eintrag.id;
+select NVL(lvl,0) into holzfaeller from BAU b inner join geb_typ t on t.id=b.tid where t.name='holzfaeller' and b.did=eintrag.id;
+select NVL(lvl,0) into steinmetz from BAU b inner join geb_typ t on t.id=b.tid where t.name='steinmetz' and b.did=eintrag.id;
+
+select MAX(id)+1 into x from Movable;
+select time_diff(eintrag.last_res_update,CURRENT_TIMESTAMP) into td from dual;
+insert into Movable(id,did) values(x,eintrag.id);
+insert into RESGRUPPE(id,holz,stein,lehm) values(x,holzfaeller*3*td,steinmetz*3*td,lehmgrube*3*td);
+update dorf set last_res_update=CURRENT_TIMESTAMP where id=eintrag.id;
+end loop;
+
+
+END UPDATE_RESOURCES;
+
+---------------------geht glaub ich nicht, bin mir nicht sicher-----------------------------------------------------------------------------------
+create or replace TRIGGER AUTO_ADD 
+AFTER INSERT OR UPDATE OF ID ON RESGRUPPE FOR EACH ROW
+
+BEGIN
+SYS.DBMS_OUTPUT.PUT_LINE('triggered');
+insert into debuginsertsfortriggertest(text) values ('triggered'||:new.id);
+for additional_dorf_res in (select m.id from resgruppe r inner join movable m on r.id=m.id where m.did in (select did from movable m where id=:new.id)) loop
+  ADD_RESOURCES(additional_dorf_res.id,:new.id);
+end loop;
+
+END;
+-----------------------------------------------------------------------------------------------------------
+
+create or replace PROCEDURE ADD_RESOURCES 
+(
+  DEST IN NUMBER 
+, SOURCE IN NUMBER 
+) AS 
+
+h number;
+l number;
+s number;
+BEGIN
+  select holz,stein,lehm into h,s,l from RESGRUPPE where ID = SOURCE;
+  update resgruppe set holz=holz+h, stein = stein+s, lehm = lehm+l where id=DEST;
+  delete resgruppe where id=source;
+  delete movable where id=source;
+  NULL;
+END ADD_RESOURCES;
+
+
+---------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION time_diff (
+DATE_1 IN timestamp, DATE_2 IN timestamp) RETURN NUMBER IS
+ 
+NDATE_1   NUMBER;
+NDATE_2   NUMBER;
+NSECOND_1 NUMBER(5,0);
+NSECOND_2 NUMBER(5,0);
+ 
+BEGIN
+  -- Get Julian date number from first date (DATE_1)
+  NDATE_1 := TO_NUMBER(TO_CHAR(DATE_1, 'J'));
+ 
+  -- Get Julian date number from second date (DATE_2)
+  NDATE_2 := TO_NUMBER(TO_CHAR(DATE_2, 'J'));
+ 
+  -- Get seconds since midnight from first date (DATE_1)
+  NSECOND_1 := TO_NUMBER(TO_CHAR(DATE_1, 'SSSSS'));
+ 
+  -- Get seconds since midnight from second date (DATE_2)
+  NSECOND_2 := TO_NUMBER(TO_CHAR(DATE_2, 'SSSSS'));
+ 
+  RETURN ABS((((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)));
+END time_diff;
+
+
+
+------------------------------------------------------------------
+create or replace function CREATE_RESOURCE
+(
+  HOLZ IN NUMBER 
+, Stein IN NUMBER 
+, Lehm IN NUMBER 
+) 
+return number
+IS 
+x number;
+BEGIN
+
+  select movable_id.nextval into x from dual;
+  insert into movable(id,did) values(x,null);
+  insert into resgruppe(id,holz,stein,lehm) values(x,HOLZ,Stein,Lehm);
+  return x;
+END CREATE_RESOURCE;
+----------------------------------------------------------------------------
+create or replace function CREATE_TRUPPE 
+(
+  schwert IN NUMBER 
+, reiter IN NUMBER 
+, bogen IN NUMBER 
+, lanze IN NUMBER 
+) 
+return number
+Is
+x number;
+BEGIN
+
+  select movable_id.nextval into x from dual;
+  insert into movable(id,did) values(x,null);
+  insert into truppe(id,schwert,reiter,bogen,lanze,owner) values(x,schwert,reiter,bogen,lanze,null);
+  return x;
+END CREATE_TRUPPE;
+
+---------------------------------ist event abgelaufen?----------------------------------------------
+create or replace FUNCTION is_in_past (
+DATE_1 IN timestamp) RETURN number IS
+ 
+NDATE_1   NUMBER;
+NDATE_2   NUMBER;
+NSECOND_1 NUMBER(5,0);
+NSECOND_2 NUMBER(5,0);
+DATE_2 timestamp;
+ 
+BEGIN
+  DATE_2 :=CURRENT_TIMESTAMP;
+  -- Get Julian date number from first date (DATE_1)
+  NDATE_1 := TO_NUMBER(TO_CHAR(DATE_1, 'J'));
+ 
+  -- Get Julian date number from second date (DATE_2)
+  NDATE_2 := TO_NUMBER(TO_CHAR(DATE_2, 'J'));
+ 
+  -- Get seconds since midnight from first date (DATE_1)
+  NSECOND_1 := TO_NUMBER(TO_CHAR(DATE_1, 'SSSSS'));
+ 
+  -- Get seconds since midnight from second date (DATE_2)
+  NSECOND_2 := TO_NUMBER(TO_CHAR(DATE_2, 'SSSSS'));
+ 
+  --RETURN (((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)) > 0;
+  
+  if (((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)) > 0 then
+    return 1;--true
+  else 
+  return 0;--false
+  end if;
+  
+END is_in_past;
+
+-------------------------------------------------------------
+create or replace function CREATE_bew_event 
+(
+dauer in number,
+von_dorf in number,
+nach_dorf in number,
+cargo in number,
+art in varchar2
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+BEGIN
+
+  x:=-1;
+  select COUNT(*) into istruppe from truppe where id=cargo;
+  select COUNT(*) into rescnt from resgruppe where id=cargo;
+  if ( istruppe = 1 AND (art='sup' or art='atk') )or (istruppe = 0 and art='res' and 1=rescnt  ) then
+     x :=event_id.nextval;
+     insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+     insert into bew_event(id,von_dorf,nach_dorf,cargo,art) values (x,von_dorf,nach_dorf,cargo,art);
+  else 
+    DBMS_OUTPUT.PUT_LINE('Resource/Truppe Type missmatch or cargo does not exist');
+  end if;
+  
+ 
+  return x;
+END CREATE_bew_event;
+-------------------------------------------------------
+create or replace function CREATE_geb_bau
+(
+dorf in number,
+geb_typ number
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+dauer number;
+bbt number;
+cur_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  select base_buildtime into bbt from geb_typ where id=geb_typ;
+  select lvl into cur_lvl from bau b where b.DID=dorf and b.TID=geb_typ;
+  dauer := bbt * (cur_lvl+1) * 1.75;
+  
+  x :=event_id.nextval;
+  insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+  insert into stat_event(id,dorf,geb_typ) values (x,dorf,GEB_TYP);
+  return x;
+END CREATE_geb_bau;
+--------------------------------------------------------
+create or replace function CREATE_Truppenausbildung
+(
+pdorf in number,
+pcargo number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  select t.lanze*30+t.reiter*180 +t.schwert*120 +bogen*60 into r_dauer from truppe t where t.id=pcargo;
+  select NVL(lvl,0) into k_lvl from bau where TID='kasserne' and DID=pdorf;
+  if k_lvl=0 then
+    x :=-1;
+  else
+  dauer := (r_dauer*1)/(k_lvl*1.5);
+    x :=event_id.nextval;
+    insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer m‰ﬂig abgeschnitten wird!!!
+    insert into stat_event(id,cargo) values (x,pcargo);
+    end if;
+  return x;
+END CREATE_Truppenausbildung;
+-------------------------------------------------------------------------
+create or replace function CREATE_DORF
+(
+name in varchar2,
+owner varchar2,
+x_pos number,
+y_pos number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  x :=dorf_id.nextval;
+  insert into dorf(id,name,owner,location,last_res_update) values(x,name,owner,SDO_GEOMETRY(2001,NULL,SDO_POINT_TYPE(x_pos, y_pos, NULL),NULL,NULL),CURRENT_TIMESTAMP);
+  return x;
+END CREATE_DORF;
