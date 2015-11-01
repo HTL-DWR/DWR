@@ -456,3 +456,47 @@ BEGIN
   
  return x;
 END split_RESOURCES;
+
+--------------------------------------------------
+create or replace function CREATE_SPIELER 
+(
+unam in varchar2,
+passwd varchar2
+) 
+return varchar2
+Is
+x number;
+BEGIN
+
+  insert into spieler(uname,clan,passwd_hash) values (unam,null,passwd);
+  return unam;
+  
+  exception
+    when DUP_VAL_ON_INDEX then
+    return '-1';
+
+
+END CREATE_SPIELER;
+--------------------------------------------------
+create or replace function CREATE_NEW_USER
+(
+uname in varchar2,
+d_name in varchar2,
+passwd_sha3 varchar2
+) 
+return varchar2
+Is
+x varchar(20);
+did number;
+BEGIN
+  
+  x := CREATE_SPIELER (uname,passwd_hash);
+  
+  if x = null then
+    RAISE_APPLICATION_ERROR(-24711,'username not unique');
+  else 
+     did:=Create_Dorf(d_name,x,1,1); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
+ end if;
+ return x;
+ 
+END CREATE_NEW_USER;

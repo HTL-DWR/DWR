@@ -27,29 +27,53 @@ name varchar2(20)
 
 create table spieler(
 uname varchar2(20) primary key,
-clan number references clan(id)
+clan number references clan(id),
+passwd_hash varchar(50)
 );
 
 create table board(
 id number primary key,
 name varchar2(50),
-op varchar2(20) references spieler(uname)
+text varchar2(255),
+op varchar2(20) references spieler(uname),
+post_time timestamp
 );
 
 create table kommentar(
 id number primary key,
 board number references board(id),
 op varchar2(20) references spieler(uname),
-text varchar2(200)
+text varchar2(200),
+post_time timestamp
 );
+
 
 create table dorf(
 id number primary key,
 name varchar2(20),
 owner varchar2(20) references spieler(uname),
-location SDO_GEOMETRY,
+d_location SDO_GEOMETRY,
 last_res_update timestamp
 );
+
+
+INSERT INTO user_sdo_geom_metadata
+( TABLE_NAME,
+COLUMN_NAME,
+DIMINFO,
+SRID
+)
+VALUES
+( 'dorf',
+'d_Location',
+SDO_DIM_ARRAY( -- 20X20 grid
+SDO_DIM_ELEMENT('X', 0, 0, 0.005),
+SDO_DIM_ELEMENT('Y', 1000, 1000, 0.005)
+),
+NULL -- SRID
+);
+
+CREATE INDEX index_dorf ON dorf(d_location) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 --hier kommt sdo object
 
 create table geb_typ(
@@ -176,10 +200,10 @@ insert into spieler(uname,clan) values('test user1',NULL);
 insert into spieler(uname,clan) values('test user2',NULL);
 insert into spieler(uname,clan) values('test user3',NULL);
 
-insert into spieler values('stefan',1);
-insert into spieler values('hansi',1);
-insert into spieler values('tino',1);
-insert into spieler values('alex',1);
+insert into spieler values('stefan',1,'sha3-hash 1234');
+insert into spieler values('hansi',1,'sha3-hash aaaa');
+insert into spieler values('tino',1,'sha3-hash abcd');
+insert into spieler values('alex',1,'sha3-hash 4321');
 
 --insert into dorf(id, name, owner, position, last_res_update) values (0,'urdorf','stefan',0, CURRENT_TIMESTAMP);
 --insert into dorf(id, name, owner, position, last_res_update) values (1,'zweitbestes dorf','alex',0,CURRENT_TIMESTAMP);
@@ -270,7 +294,7 @@ select is_in_past(e.beginn+e.dauer) from event e;
 select id,is_in_past(e.beginn+e.dauer/60/60/24) from event e;
 select * from dorf;
 
-/*declare 
+declare 
 x number;
 begin
 x := CREATE_DORF('hansidorf','hansi',1,1);
@@ -278,10 +302,34 @@ x := CREATE_DORF('d1','stefan',1,1);
 x := CREATE_DORF('d2','tino',1,1);
 x := CREATE_DORF('das dorf','alex',1,1);
 x := CREATE_DORF('gawo-galgen','hansi',1,1);
-x := CREATE_DORF('asdf','stefan',1,1);
-x := CREATE_DORF('hansidorf2','hansi',1,1);
-end;*/
+x := CREATE_DORF('ZehnZehnDorf','alex',10,10);
 
-select d.name as did, s.uname as owner,t.BOGEN,t.lanze,t.reiter,t.schwert,s.CLAN  from dorf d inner join spieler s on s.uname=d.owner left join movable m on m.did=d.id left join truppe t on t.id=m.id;
+end;
+select * from dorf;
+commit;
+--select d.name as did, s.uname as owner,t.BOGEN,t.lanze,t.reiter,t.schwert,s.CLAN  from dorf d inner join spieler s on s.uname=d.owner left join movable m on m.did=d.id left join truppe t on t.id=m.id;
 
-select * from dorf d where SDO_CONTAINS(d.location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(2,2,4,6)))='TRUE';
+
+select * from dorf d where SDO_ANYINTERACT(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(9,9, 11,11))) = 'TRUE';
+
+--select * from dorf d where SDO_CONTAINS(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(2,2,4,6)))='TRUE';
+
+
+/*
+DECLARE
+  UNAME VARCHAR2(200);
+  D_NAME VARCHAR2(200);
+  PASSWD_SHA3 VARCHAR2(200);
+  v_Return varchar2(200);
+BEGIN
+  v_Return := CREATE_NEW_USER(
+    'peter',
+    'dname',
+    'asdffdsa'
+  );
+
+ -- :v_Return := v_Return;
+--rollback; 
+END;*/
+
+select * from spieler;
