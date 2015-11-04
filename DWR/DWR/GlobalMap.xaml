@@ -1,0 +1,8 @@
+﻿<Window x:Class="DWR.GlobalMap"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="GlobalMap" Height="349.6" Width="578.4">
+    <Grid Margin="0,0,4,9.6">
+        <ScrollViewer x:Name="scvMap" HorizontalAlignment="Left" Height="292" Margin="10,10,0,0" VerticalAlignment="Top" Width="330"/>
+    </Grid>
+</Window>
