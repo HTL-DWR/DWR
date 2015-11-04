@@ -96,10 +96,12 @@ namespace DWR
 
             using (DataBaseConnection db = new DataBaseConnection(this.ConnectionString))
             {
+                System.Diagnostics.Debug.WriteLine("select r.holz, r.stein, r.lehm from resgruppe r inner join movable m on m.id = r.id  inner join dorf d on d.id = m.did where d.name='" + _dname +"'");
+
                 using (IDataReader reader = db.ExecuteSqlCommand("select r.holz, r.stein, r.lehm from resgruppe r inner join movable m on m.id = r.id  inner join dorf d on d.id = m.did where d.name='" + _dname + "'"))
                 {
                     reader.Read();
-                    rohstoffe = new Rohstoffe((int)reader["holz"], (int)reader["stein"], (int)reader["lehm"]);
+                    rohstoffe = new Rohstoffe(Int16.Parse(reader["holz"].ToString()), Int16.Parse(reader["stein"].ToString()), Int16.Parse(reader["lehm"].ToString()));
                 }
             }
 
@@ -115,24 +117,24 @@ namespace DWR
                 using (IDataReader reader = db.ExecuteSqlCommand("select t.schwert, t.reiter, t.bogen, t.lanze from truppe t inner join movable m on m.id = t.id  inner join dorf d on d.id = m.did inner join spieler s on s.uname = d.owner where s.uname = '" + spieler.name  + "' and d.name='" + _dname + "'"))
                 {
                     reader.Read();
-                    truppen = new Truppen((int)reader["schwer"], (int)reader["reiter"], (int)reader["bogen"], (int)reader["lanze"]);
+                    truppen = new Truppen(Int16.Parse(reader["schwert"].ToString()), Int16.Parse(reader["reiter"].ToString()), Int16.Parse(reader["bogen"].ToString()), Int16.Parse(reader["lanze"].ToString()));
                 }
             }
 
             return truppen;
         }
 
-        private List<Gebaeude> getDorfGebaeude(String _dnaem)
+        private List<Gebaeude> getDorfGebaeude(String _dname)
         {
             List<Gebaeude> gebaeude = new List<Gebaeude>();
 
             using (DataBaseConnection db = new DataBaseConnection(this.ConnectionString))
             {
-                using (IDataReader reader = db.ExecuteSqlCommand("")) //hier select korektes select einfügen!!!!!!!!!
+                using (IDataReader reader = db.ExecuteSqlCommand("select gt.name, b.lvl from dorf d inner join bau b on b.did=d.id inner join geb_typ gt on b.tid = gt.id where d.name='" + _dname +"'")) 
                 {
                     while (reader.Read())
                     {
-                        gebaeude.Add(new Gebaeude((String)reader["name"], (int)reader["level"])); //Properties überprüfen!!!!!!
+                        gebaeude.Add(new Gebaeude((String)reader["name"], Int16.Parse(reader["lvl"].ToString()))); 
                     }
                 }
             }

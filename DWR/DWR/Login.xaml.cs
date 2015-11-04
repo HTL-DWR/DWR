@@ -24,8 +24,8 @@ namespace DWR
     public partial class Login : Window
     {
        
-        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=212.152.179.117:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
-        //private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
+        //private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=212.152.179.117:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
+        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
 
         private static MD5hash hasher = new MD5hash();
 
@@ -64,8 +64,6 @@ namespace DWR
 
                     String pw_hashed = MD5hash.GetHashString(txtPassowrd.Password);
 
-                    MessageBox.Show(pw_hashed);
-
                     parameterValues.Add(pw_hashed);
 
                     db.ExecuteSqlProcedure("CREATE_NEW_USER", parameterNames, parameterTypes, parameterDirections, parameterValues);
@@ -84,7 +82,7 @@ namespace DWR
             {
                 using (DataBaseConnection db = new DataBaseConnection(this.ConnectionString))
                 {
-                    using (IDataReader reader = db.ExecuteSqlCommand("select decode(count(uname),0,'false','true'), passwd_hash from spieler where uname = '" + txtUser.Text + "'"))
+                    using (IDataReader reader = db.ExecuteSqlCommand("select decode(count(uname),0,'false','true'), passwd_hash from spieler where uname = '" + txtUser.Text + "' group by passwd_hash"))
                     {
                         reader.Read();
                         if (((String)reader[0]).Equals("false"))
@@ -93,9 +91,9 @@ namespace DWR
                         }
                         else
                         {
-                            String pw_hashed = ((String)reader[1]);
+                            String pw_hashed = ((String)reader["passwd_hash"]);
 
-                            if (!MD5hash.GetHashString(pw_hashed).Equals(MD5hash.GetHashString(txtPassowrd.Password)))
+                            if (!pw_hashed.Equals(MD5hash.GetHashString(txtPassowrd.Password)))
                             {
                                 throw new Exception("Login falsch: Passwort falsch!");
                             }

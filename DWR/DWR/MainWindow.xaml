@@ -49,7 +49,7 @@
         <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="218,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
         <DataGrid x:Name="GridDoerfer" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="10,315,0,0" VerticalAlignment="Top" Width="111"/>
         <Label x:Name="lblArcher" Content="Archer:" Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="551,189,0,0" VerticalAlignment="Top" Width="45"/>
-        <Label x:Name="lblAmountArcher" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,197,0,0" VerticalAlignment="Top" Width="20" RenderTransformOrigin="0.5,2.391"/>
+        <Label x:Name="lblAmountArcher" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,197,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="0.5,2.391"/>
 
     </Grid>
 </Window>
