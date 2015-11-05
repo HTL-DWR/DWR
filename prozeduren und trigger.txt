@@ -283,9 +283,6 @@ BEGIN
 	return distance;
 END;
 ------------------------------------------------------------------
-
-
-
 CREATE OR REPLACE PROCEDURE ATK_RESOLVE 
 (
   ATK_DORF IN NUMBER 
@@ -478,16 +475,16 @@ BEGIN
 
 END CREATE_SPIELER;
 --------------------------------------------------
-create or replace function CREATE_NEW_USER
+create or replace procedure CREATE_NEW_USER
 (
 uname in varchar2,
 d_name in varchar2,
-passwd_sha3 varchar2
+passwd_hash varchar2
 ) 
-return varchar2
-Is
+As
 x varchar(20);
-did number;
+ndid number;
+resid number;
 BEGIN
   
   x := CREATE_SPIELER (uname,passwd_hash);
@@ -495,8 +492,88 @@ BEGIN
   if x = null then
     RAISE_APPLICATION_ERROR(-24711,'username not unique');
   else 
-     did:=Create_Dorf(d_name,x,1,1); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
+     ndid:=Create_Dorf(d_name,x,dbms_random.value(10,-10),dbms_random.value(10,-10)); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
+     resid:=create_resource(100,100,100);
+     update movable set did=ndid where id=resid;
+     
+     resid:=create_truppe(10,10,10,10);
+     update movable set did=ndid where id=resid;
+     
+     insert into bau(did,tid,lvl) values(ndid,1,1);
+ 
  end if;
- return x;
  
 END CREATE_NEW_USER;
+-----------------------------------------------
+create or replace procedure BAUE_GEBÄUDE_IN_DORF
+(
+geb_name in varchar2,
+did in number
+) 
+As
+x varchar(20);
+tid number;
+curr_lvl number;
+BEGIN
+  
+  select gt.id into tid from geb_typ gt where gt.NAME=geb_name;
+  
+  if tid = null then
+    RAISE_APPLICATION_ERROR(-24712,'specified gebäudetyp does not exist');
+  end if;
+  
+  select MIN(b.lvl) into curr_lvl from bau b where b.tid=tid and b.did=did;
+  
+  if curr_lvl = null then
+    curr_lvl := 1;
+  end if;
+  insert into bau(did,tid,lvl) values(did,tid,curr_lvl);
+END BAUE_GEBÄUDE_IN_DORF;
+------------------------------------------------------------
+
+create or replace procedure CREATE_GEBÄUDE_TYP
+(
+geb_name in varchar2,
+base_build_time in number
+) 
+As
+x varchar(20);
+BEGIN
+  insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,base_build_time,geb_name);
+END CREATE_GEBÄUDE_TYP;
+------------------------------------------------------------
+create or replace procedure POST_COMMENT
+(
+board in number,
+text in varchar2,
+op in varchar2
+) 
+As
+x varchar(20);
+BEGIN
+  insert into kommentar(id,board,text,op,post_time)values(kommentar_id.nextval,board,text,op,CURRENT_TIMESTAMP);
+END POST_COMMENT;
+----------------------------------------------------
+create or replace procedure NEW_BOARD
+(
+name in varchar2,
+text in varchar2,
+op in varchar2
+) 
+As
+x varchar(20);
+BEGIN
+  insert into board(id,name,text,op,post_time)values(board_id.nextval,name,text,op,CURRENT_TIMESTAMP);
+END NEW_BOARD;
+---------------------------------------------------
+create or replace procedure CREATE_CLAN
+(
+name varchar2
+) 
+As
+x number;
+BEGIN
+
+  insert into clan(id,name) values (clan_id.nextval,name);
+  
+END CREATE_CLAN;

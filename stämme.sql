@@ -83,6 +83,7 @@ name varchar2(20)
 ); --build time = base_buildtime * (lvl+1) * 1.75
 
 
+
 create table bau(
 did number references dorf(id),
 tid number references geb_typ(id),
@@ -95,10 +96,6 @@ create table Movable(
 id number primary key,
 did number references dorf(id)
 );
-
-
-
-
 
 
 create table resgruppe(
@@ -190,9 +187,6 @@ CREATE SEQUENCE event_id
 MINVALUE 1
 START WITH 1
 INCREMENT BY 1;
-
-
-
 
 insert into clan values(1,'devs');
 
@@ -309,10 +303,20 @@ select * from dorf;
 commit;
 --select d.name as did, s.uname as owner,t.BOGEN,t.lanze,t.reiter,t.schwert,s.CLAN  from dorf d inner join spieler s on s.uname=d.owner left join movable m on m.did=d.id left join truppe t on t.id=m.id;
 
+insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,10,'Hauptgebäude');
+insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,6,'Lehmgrube');
+insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,7,'Holzfäller');
+insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,10,'Steinbruch');
+
+select * from dorf;
+select id from dorf where name='Dorf von sepp';
+insert into bau d where did='Dorf von sepp';
 
 select * from dorf d where SDO_ANYINTERACT(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(9,9, 11,11))) = 'TRUE';
 
 --select * from dorf d where SDO_CONTAINS(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(2,2,4,6)))='TRUE';
+
+select gt.name, b.lvl from dorf d inner join bau b on b.did=d.id inner join geb_typ gt on b.tid=gt.id where d.name='Dorf von sepp';
 
 
 /*
@@ -333,3 +337,9 @@ BEGIN
 END;*/
 
 select * from spieler;
+
+commit;
+
+select MIN(b.lvl) from bau b where b.tid=1 and b.did=1;
+
+select * from spieler inner join dorf d on d.owner=spieler.uname inner join movable m on m.did=d.id inner join truppe r on m.id=r.id where uname='dddd';
