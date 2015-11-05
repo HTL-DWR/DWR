@@ -287,7 +287,7 @@ select is_in_past(e.beginn+e.dauer) from event e;
 --wenn wir 15 sekunden so einfügen würden: 15
 select id,is_in_past(e.beginn+e.dauer/60/60/24) from event e;
 select * from dorf;
-
+/*
 declare 
 x number;
 begin
@@ -298,7 +298,7 @@ x := CREATE_DORF('das dorf','alex',1,1);
 x := CREATE_DORF('gawo-galgen','hansi',1,1);
 x := CREATE_DORF('ZehnZehnDorf','alex',10,10);
 
-end;
+end;*/
 select * from dorf;
 commit;
 --select d.name as did, s.uname as owner,t.BOGEN,t.lanze,t.reiter,t.schwert,s.CLAN  from dorf d inner join spieler s on s.uname=d.owner left join movable m on m.did=d.id left join truppe t on t.id=m.id;
@@ -307,11 +307,11 @@ insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,10,'Hauptge
 insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,6,'Lehmgrube');
 insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,7,'Holzfäller');
 insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,10,'Steinbruch');
-
+delete from geb_typ;
 select * from dorf;
 select id from dorf where name='Dorf von sepp';
 insert into bau d where did='Dorf von sepp';
-
+select * from geb_typ;
 select * from dorf d where SDO_ANYINTERACT(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(9,9, 11,11))) = 'TRUE';
 
 --select * from dorf d where SDO_CONTAINS(d.d_location,SDO_GEOMETRY(2003,null,null,SDO_ELEM_INFO_ARRAY(1,1003,3),SDO_ORDINATE_ARRAY(2,2,4,6)))='TRUE';
@@ -319,27 +319,31 @@ select * from dorf d where SDO_ANYINTERACT(d.d_location,SDO_GEOMETRY(2003,null,n
 select gt.name, b.lvl from dorf d inner join bau b on b.did=d.id inner join geb_typ gt on b.tid=gt.id where d.name='Dorf von sepp';
 
 
+
 /*
-DECLARE
-  UNAME VARCHAR2(200);
-  D_NAME VARCHAR2(200);
-  PASSWD_SHA3 VARCHAR2(200);
-  v_Return varchar2(200);
 BEGIN
-  v_Return := CREATE_NEW_USER(
-    'peter',
-    'dname',
+  CREATE_NEW_USER(
+    'ugugug',
+    'neudorf',
     'asdffdsa'
   );
-
- -- :v_Return := v_Return;
---rollback; 
 END;*/
 
-select * from spieler;
+select * from spieler s inner join dorf d on d.owner=s.uname inner join movable m on m.did=d.id inner join resgruppe r on r.id=m.id inner join bau b on b.did=d.id inner join geb_typ gt on gt.id=b.tid where s.uname='ugugug';
+
+
 
 commit;
 
+select d.id, t.x,t.y from dorf d, TABLE(SDO_UTIL.GETVERTICES(d.d_location)) t where name='neudorf';
+
+select MIN(b.lvl) from bau b where b.tid=9 and b.did=21;
+select MIN(gt.id)  from geb_typ gt where gt.NAME='Hauptgebäude';
+
 select MIN(b.lvl) from bau b where b.tid=1 and b.did=1;
 
-select * from spieler inner join dorf d on d.owner=spieler.uname inner join movable m on m.did=d.id inner join truppe r on m.id=r.id where uname='dddd';
+select * from event e where e.
+
+select * from clan;
+
+select * from spieler inner join dorf d on d.owner=spieler.uname inner join movable m on m.did=d.id inner join truppe r on m.id=r.id where uname='dname';

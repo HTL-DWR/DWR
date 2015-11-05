@@ -492,16 +492,24 @@ BEGIN
   if x = null then
     RAISE_APPLICATION_ERROR(-24711,'username not unique');
   else 
-     ndid:=Create_Dorf(d_name,x,dbms_random.value(10,-10),dbms_random.value(10,-10)); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
+     ndid:=Create_Dorf(d_name,x,round(dbms_random.value(10,-10)),round(dbms_random.value(10,-10))); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
      resid:=create_resource(100,100,100);
      update movable set did=ndid where id=resid;
      
      resid:=create_truppe(10,10,10,10);
      update movable set did=ndid where id=resid;
      
-     insert into bau(did,tid,lvl) values(ndid,1,1);
- 
+     --insert into bau(did,tid,lvl) values(ndid,1,1);
+     baue_gebäude_in_dorf('Hauptgebäude',ndid);
+     
  end if;
+ 
+  exception
+     WHEN OTHERS THEN
+      IF SQLCODE = -24712 THEN
+        RAISE_APPLICATION_ERROR(-24713,'database not inicialised appropriate. reason: specified gebäudetyp does not exist');
+      END IF;
+
  
 END CREATE_NEW_USER;
 -----------------------------------------------
@@ -516,17 +524,17 @@ tid number;
 curr_lvl number;
 BEGIN
   
-  select gt.id into tid from geb_typ gt where gt.NAME=geb_name;
+  select MIN(gt.id) into tid from geb_typ gt where gt.NAME=geb_name;
   
   if tid = null then
     RAISE_APPLICATION_ERROR(-24712,'specified gebäudetyp does not exist');
   end if;
   
-  select MIN(b.lvl) into curr_lvl from bau b where b.tid=tid and b.did=did;
+  select NVL (MIN(b.lvl),1) into curr_lvl from bau b where b.tid=tid and b.did=did;
   
-  if curr_lvl = null then
+  /*if curr_lvl = null then
     curr_lvl := 1;
-  end if;
+  end if;*/
   insert into bau(did,tid,lvl) values(did,tid,curr_lvl);
 END BAUE_GEBÄUDE_IN_DORF;
 ------------------------------------------------------------
