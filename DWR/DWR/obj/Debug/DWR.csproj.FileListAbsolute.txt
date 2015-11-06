@@ -65,3 +65,6 @@ X:\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
 \\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
 \\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
 \\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR_Content.g.cs
+\\Mac\Home\DWR\DWR\DWR\bin\Debug\DWR.exe.config
+\\Mac\Home\DWR\DWR\DWR\obj\Debug\DWR.exe
+\\Mac\Home\DWR\DWR\DWR\obj\Debug\DWR.pdb
