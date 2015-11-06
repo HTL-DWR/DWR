@@ -1,0 +1,124 @@
+C:\Users\Hansi\Desktop\DWR\DWR\bin\Debug\DWR.exe.config
+C:\Users\Hansi\Desktop\DWR\DWR\bin\Debug\DWR.exe
+C:\Users\Hansi\Desktop\DWR\DWR\bin\Debug\DWR.pdb
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\GlobalMap.baml
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\MainWindow.baml
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\GlobalMap.g.cs
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\MainWindow.g.cs
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\App.g.cs
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.g.resources
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.exe
+C:\Users\Hansi\Desktop\DWR\DWR\obj\Debug\DWR.pdb
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\bin\Debug\DWR.exe.config
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.exe
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.pdb
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\bin\Debug\DWR.exe
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\bin\Debug\DWR.pdb
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\GlobalMap.baml
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\MainWindow.baml
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\GlobalMap.g.cs
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\MainWindow.g.cs
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\App.g.cs
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.g.resources
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\Login.baml
+C:\Users\Hansi\Desktop\BSD\DWR\DWR\obj\Debug\Login.g.cs
+X:\DWR\DWR\bin\Debug\DWR.exe.config
+X:\DWR\DWR\obj\Debug\DWR.exe
+X:\DWR\DWR\obj\Debug\DWR.pdb
+X:\DWR\DWR\bin\Debug\DWR.exe
+X:\DWR\DWR\bin\Debug\DWR.pdb
+X:\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+X:\DWR\DWR\obj\Debug\GlobalMap.baml
+X:\DWR\DWR\obj\Debug\Login.baml
+X:\DWR\DWR\obj\Debug\MainWindow.baml
+X:\DWR\DWR\obj\Debug\GlobalMap.g.cs
+X:\DWR\DWR\obj\Debug\Login.g.cs
+X:\DWR\DWR\obj\Debug\MainWindow.g.cs
+X:\DWR\DWR\obj\Debug\App.g.cs
+X:\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+X:\DWR\DWR\obj\Debug\DWR.g.resources
+X:\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+X:\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\bin\Debug\DWR.exe.config
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.exe
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.pdb
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\bin\Debug\DWR.exe
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\bin\Debug\DWR.pdb
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\GlobalMap.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\Login.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\MainWindow.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\GlobalMap.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\Login.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\MainWindow.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\App.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.g.resources
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR\DWR\obj\Debug\DWR_Content.g.cs
+E:\DWR neu\DWR\DWR\bin\Debug\DWR.exe.config
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.exe
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.pdb
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+E:\DWR neu\DWR\DWR\obj\Debug\GlobalMap.baml
+E:\DWR neu\DWR\DWR\obj\Debug\Login.baml
+E:\DWR neu\DWR\DWR\obj\Debug\MainWindow.baml
+E:\DWR neu\DWR\DWR\obj\Debug\GlobalMap.g.cs
+E:\DWR neu\DWR\DWR\obj\Debug\Login.g.cs
+E:\DWR neu\DWR\DWR\obj\Debug\MainWindow.g.cs
+E:\DWR neu\DWR\DWR\obj\Debug\App.g.cs
+E:\DWR neu\DWR\DWR\obj\Debug\DWR_Content.g.cs
+E:\DWR neu\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.g.resources
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+E:\DWR neu\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+E:\DWR neu\DWR\DWR\bin\Debug\DWR.exe
+E:\DWR neu\DWR\DWR\bin\Debug\DWR.pdb
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\bin\Debug\DWR.exe.config
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.exe
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.pdb
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\bin\Debug\DWR.exe
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\bin\Debug\DWR.pdb
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\GlobalMap.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\Login.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\MainWindow.baml
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\GlobalMap.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\Login.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\MainWindow.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\App.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR_Content.g.cs
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.g.resources
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+\\Mac\Home\Documents\Schule\BSD REL ORG\DWR neu\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+D:\DWR neu\DWR\DWR\bin\Debug\DWR.exe.config
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.exe
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.pdb
+D:\DWR neu\DWR\DWR\bin\Debug\DWR.exe
+D:\DWR neu\DWR\DWR\bin\Debug\DWR.pdb
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.csprojResolveAssemblyReference.cache
+D:\DWR neu\DWR\DWR\obj\Debug\GlobalMap.baml
+D:\DWR neu\DWR\DWR\obj\Debug\Login.baml
+D:\DWR neu\DWR\DWR\obj\Debug\MainWindow.baml
+D:\DWR neu\DWR\DWR\obj\Debug\GlobalMap.g.cs
+D:\DWR neu\DWR\DWR\obj\Debug\Login.g.cs
+D:\DWR neu\DWR\DWR\obj\Debug\MainWindow.g.cs
+D:\DWR neu\DWR\DWR\obj\Debug\App.g.cs
+D:\DWR neu\DWR\DWR\obj\Debug\DWR_Content.g.cs
+D:\DWR neu\DWR\DWR\obj\Debug\DWR_MarkupCompile.cache
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.g.resources
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.Properties.Resources.resources
+D:\DWR neu\DWR\DWR\obj\Debug\DWR.csproj.GenerateResource.Cache
+\\Mac\Home\DWR\DWR neu\DWR\DWR\bin\Debug\DWR.exe.config
+\\Mac\Home\DWR\DWR neu\DWR\DWR\obj\Debug\DWR.exe
+\\Mac\Home\DWR\DWR neu\DWR\DWR\obj\Debug\DWR.pdb

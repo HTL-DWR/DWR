@@ -1,0 +1,55 @@
+﻿<Window x:Class="DWR.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Übersicht" Height="462.907" Width="707.984"
+         WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="73*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="280" Margin="519,28,0,0" Stroke="Black" VerticalAlignment="Top" Width="170"/>
+        <ListBox x:Name="ListJobs" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="366,315,0,0" VerticalAlignment="Top" Width="315"/>
+        <DataGrid x:Name="GridGebäude" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="126,315,0,0" VerticalAlignment="Top" Width="235"/>
+        <StackPanel x:Name="pnlMap" Grid.Column="1" HorizontalAlignment="Left" Height="234" Margin="1,65,0,0" VerticalAlignment="Top" Width="500"/>
+        <Label x:Name="lblRessourcen" Content="Ressourcen" Grid.Column="1" HorizontalAlignment="Left" Height="29" Margin="515,210,0,0" VerticalAlignment="Top" Width="86"/>
+        <Label x:Name="lblHolz" Content="Holz" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="552,226,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label x:Name="lblLehm" Content="Lehm" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="551,250,0,0" VerticalAlignment="Top" Width="50"/>
+        <Label x:Name="lblStein" Content="Stein" Grid.Column="1" HorizontalAlignment="Left" Height="32" Margin="551,278,0,0" VerticalAlignment="Top" Width="37"/>
+        <Label x:Name="lblAmountHolz" Content="...." Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="629,231,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136"/>
+        <Label x:Name="lblAmountLehm" Content="...." Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="629,253,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136"/>
+        <Label x:Name="lblAmountStein" Content="...." Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="629,278,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136"/>
+        <Label x:Name="lblVillagers" Content="Villagers:" Grid.Column="1" HorizontalAlignment="Left" Height="29" Margin="516,29,0,0" VerticalAlignment="Top" Width="88" RenderTransformOrigin="0.542,-0.462"/>
+        <Label x:Name="lblVillagers1" Content="Villagers" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="549,54,0,0" VerticalAlignment="Top" Width="55"/>
+        <Label x:Name="lblAmountVillagers" Content="..." Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="634,54,0,0" VerticalAlignment="Top" Width="55" RenderTransformOrigin="0.493,0.136"/>
+        <Label x:Name="lblArmy" Content="Army:" Grid.Column="1" HorizontalAlignment="Left" Margin="516,72,0,0" VerticalAlignment="Top" Width="77"/>
+        <Label x:Name="lblFighter" Content="Fighters" Grid.Column="1" HorizontalAlignment="Left" Margin="552,100,0,0" VerticalAlignment="Top" Width="50"/>
+        <Label x:Name="lblAmountFighters" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,100,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.057,0.039" Width="20"/>
+        <Label x:Name="lblRiders" Content="Riders" Grid.Column="1" HorizontalAlignment="Left" Margin="552,130,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.042,-0.055" Width="41"/>
+        <Label x:Name="lblAmountRiders" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,130,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.352,-0.742" Width="20"/>
+        <Label x:Name="lblLancer" Content="Lancer" Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="551,158,0,0" VerticalAlignment="Top" Width="45"/>
+        <Label x:Name="lblAmountLancer" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,158,0,0" VerticalAlignment="Top" Width="20"/>
+        <Label x:Name="lblDorfName" Content="..." Grid.Column="1" HorizontalAlignment="Left" Height="49" Margin="1,29,0,0" VerticalAlignment="Top" Width="288" FontSize="31"/>
+        <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="702" Grid.ColumnSpan="2">
+            <MenuItem Header="Map" Click="MenuItemMap_Click"/>
+            <MenuItem Header="Benachrichtigungen" />
+            <MenuItem Header="Nachrichten" />
+        </Menu>
+
+        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="212" Stroke="Black" VerticalAlignment="Top" Width="491" Grid.Column="1" Margin="10,78,0,0"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="218,94,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="126,111,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="55,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="126,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="43" Margin="218,231,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="310,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="366,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="310,111,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="218,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
+        <DataGrid x:Name="GridDoerfer" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="10,315,0,0" VerticalAlignment="Top" Width="111"/>
+        <Label x:Name="lblArcher" Content="Archer:" Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="551,189,0,0" VerticalAlignment="Top" Width="45"/>
+        <Label x:Name="lblAmountArcher" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,197,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="0.5,2.391"/>
+
+    </Grid>
+</Window>
