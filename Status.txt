@@ -1,4 +1,0 @@
-Datenbank erstellt (Millonig).
-Anfang: Server (Notsch).
-Prozeduren & Trigger geschrieben (Millonig,Notsch,Zeiringer,Jäger J.).
-ERD erstellt (Millonig, Jäger J.).
