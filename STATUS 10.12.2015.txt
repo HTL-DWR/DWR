@@ -1,0 +1,5 @@
+STATUS 03.12.2015 - 10.12.2015
+NOTSCH: EVENT Auswertung Prozedur 70% fertig. Benötigt für Engine um Abgelaufene Events auszuwerten und zu löschen.
+MILLONIG: BAU-EVENT, Webservice & Client mitgearbeitet
+JÄGER: Webservice Spieler Detail, XML-DESERIALISIERUNG
+ZEIRINGER: Webservice Model & DORF DETAIL FULL
