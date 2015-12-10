@@ -24,23 +24,27 @@ namespace DWR
     {
         private Spieler spieler;
         private GlobalMap gm;
-        //private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=212.152.179.117:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
-        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
+        private Notification nw;
+        private Benachrichtigung bw;
+        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=212.152.179.117:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
+        private Dorf dorf;
+        //private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
 
         public MainWindow(String _username)
         {
             try
             {
-                spieler = new Spieler();
-                spieler.name = _username;
 
-                InitializeComponent();
-                spieler.doerfer = getDoerferNames();
-
+                spieler = (Spieler)new XMLConverter().Request("SpielerDetail/?username=" + _username, typeof(Spieler));
+                dorf = (Dorf)new XMLConverter().Request("DorfDetailFull/?id=" + spieler.doerfer[0], typeof(Dorf));
                 GridDoerfer.ItemsSource = spieler.doerfer;
+
+                fillWithDorfData(dorf);
+                InitializeComponent();
+                /*spieler.doerfer = getDoerferNames();
                 GridDoerfer.SelectedIndex = 0;
 
-                fillWithDorfData((Dorf)GridDoerfer.SelectedItem);
+                fillWithDorfData((Dorf)GridDoerfer.SelectedItem);*/
             }
             catch (Exception ex)
             {
@@ -51,19 +55,57 @@ namespace DWR
         private void fillWithDorfData(Dorf dorf) {
             lblDorfName.Content = dorf.name;
 
-            dorf.rohstoffe = getDorfRes(dorf.name);
             lblAmountHolz.Content = dorf.rohstoffe.holz;
             lblAmountStein.Content = dorf.rohstoffe.stein;
             lblAmountLehm.Content = dorf.rohstoffe.lehm;
 
-            dorf.truppen = getDorfTruppen(dorf.name);
             lblAmountFighters.Content = dorf.truppen.schwert;
             lblAmountRiders.Content = dorf.truppen.reiter;
             lblAmountLancer.Content = dorf.truppen.lanze;
             lblAmountArcher.Content = dorf.truppen.bogen;
 
-            dorf.gebaude = getDorfGebaeude(dorf.name);
             GridGebäude.ItemsSource = dorf.gebaude;
+
+            pnlMap.Background = Brushes.DarkGreen;
+            Canvas Gebäude = addPictureToBuilding();
+            pnlMap.Content = Gebäude;
+            pnlMap.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+
+        }
+
+        private Canvas addPictureToBuilding()
+        {
+            Canvas GebäudeInDorf = new Canvas();
+
+            int top = 40;
+            int left = 20;
+            int counter = 0;
+
+            foreach(Gebaeude g in dorf.gebaude)
+            {   
+                Rectangle Rectangle = new Rectangle();
+                Rectangle.Width = 60;
+                Rectangle.Height = 30;
+                ImageBrush ib = new ImageBrush();
+                ib.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/"+ g.name.ToLower()+".png"));
+                Rectangle.Fill = ib;
+                Canvas.SetLeft(Rectangle, top); //Betrag einer Zahl
+                Canvas.SetTop(Rectangle, left);
+                GebäudeInDorf.Children.Add(Rectangle);
+
+                if (counter < 3 )
+                {
+                    top += 20;
+                }
+                else
+                {
+                    counter = 0;
+                    top -= 60;
+                    left += 20;
+                }
+            }
+
+            return GebäudeInDorf;
         }
 
         private void MenuItemMap_Click(object sender, RoutedEventArgs e)
@@ -72,7 +114,20 @@ namespace DWR
             gm.Show();
         }
 
-        private List<Dorf> getDoerferNames()
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            nw = new Notification();
+            nw.Show();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            bw = new Benachrichtigung();
+            bw.Show();
+        }
+
+        /*
+                private List<Dorf> getDoerferNames()
         {
             List<Dorf> doerfer = new List<Dorf>();
 
@@ -124,7 +179,7 @@ namespace DWR
             return truppen;
         }
 
-        private List<Gebaeude> getDorfGebaeude(String _dname)
+         private List<Gebaeude> getDorfGebaeude(String _dname)
         {
             List<Gebaeude> gebaeude = new List<Gebaeude>();
 
@@ -141,5 +196,8 @@ namespace DWR
 
             return gebaeude;
         }
+        */
+
+
     }
 }

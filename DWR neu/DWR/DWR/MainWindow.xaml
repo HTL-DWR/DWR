@@ -12,7 +12,6 @@
         <Rectangle Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="280" Margin="519,28,0,0" Stroke="Black" VerticalAlignment="Top" Width="170"/>
         <ListBox x:Name="ListJobs" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="366,315,0,0" VerticalAlignment="Top" Width="315"/>
         <DataGrid x:Name="GridGebäude" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="126,315,0,0" VerticalAlignment="Top" Width="235"/>
-        <StackPanel x:Name="pnlMap" Grid.Column="1" HorizontalAlignment="Left" Height="234" Margin="1,65,0,0" VerticalAlignment="Top" Width="500"/>
         <Label x:Name="lblRessourcen" Content="Ressourcen" Grid.Column="1" HorizontalAlignment="Left" Height="29" Margin="515,210,0,0" VerticalAlignment="Top" Width="86"/>
         <Label x:Name="lblHolz" Content="Holz" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="552,226,0,0" VerticalAlignment="Top" Width="37"/>
         <Label x:Name="lblLehm" Content="Lehm" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="551,250,0,0" VerticalAlignment="Top" Width="50"/>
@@ -33,23 +32,13 @@
         <Label x:Name="lblDorfName" Content="..." Grid.Column="1" HorizontalAlignment="Left" Height="49" Margin="1,29,0,0" VerticalAlignment="Top" Width="288" FontSize="31"/>
         <Menu HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="702" Grid.ColumnSpan="2">
             <MenuItem Header="Map" Click="MenuItemMap_Click"/>
-            <MenuItem Header="Benachrichtigungen" />
-            <MenuItem Header="Nachrichten" />
+            <MenuItem Header="Benachrichtigungen" Click="MenuItem_Click_1" />
+            <MenuItem Header="Nachrichten" Click="MenuItem_Click" />
         </Menu>
-
-        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="212" Stroke="Black" VerticalAlignment="Top" Width="491" Grid.Column="1" Margin="10,78,0,0"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="218,94,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="126,111,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="55,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="126,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="43" Margin="218,231,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="310,210,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="366,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="310,111,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
-        <Ellipse Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="218,156,0,0" Stroke="Black" VerticalAlignment="Top" Width="71" Fill="Red"/>
         <DataGrid x:Name="GridDoerfer" Grid.Column="1" HorizontalAlignment="Left" Height="111" Margin="10,315,0,0" VerticalAlignment="Top" Width="111"/>
         <Label x:Name="lblArcher" Content="Archer:" Grid.Column="1" HorizontalAlignment="Left" Height="31" Margin="551,189,0,0" VerticalAlignment="Top" Width="45"/>
         <Label x:Name="lblAmountArcher" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="635,197,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="0.5,2.391"/>
+        <ScrollViewer x:Name="pnlMap" Grid.Column="1" HorizontalAlignment="Left" Height="220" Margin="10,83,0,0" VerticalAlignment="Top" Width="500"/>
 
     </Grid>
 </Window>

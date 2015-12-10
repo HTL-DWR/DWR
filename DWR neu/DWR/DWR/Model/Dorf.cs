@@ -7,7 +7,6 @@ namespace DWR.Model
 {
     public class Dorf
     {
-        
         public String name { get; set; }
         public List<Gebaeude> gebaude { get; set; }
 

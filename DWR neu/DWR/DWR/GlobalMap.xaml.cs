@@ -22,18 +22,26 @@ namespace DWR
     /// </summary>
     public partial class GlobalMap : Window
     {
-        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
-
+        //private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=192.168.128.151:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
+        private String ConnectionString = "Provider=OraOLEDB.Oracle; Data Source=212.152.179.117:1521/ora11g; User Id=d5bhifs11;Password=d5bhifs11;OLEDB.NET=True;";
 
         public GlobalMap()
         {
             InitializeComponent();
+
+            this.Background = Brushes.BurlyWood;
             PaintVillage();
+            rectRes.Fill = Brushes.Transparent;
+            rectTrup.Fill = Brushes.Transparent;
+
         }
 
         private void PaintVillage()
         {
+            
             Canvas canvasPanel = new Canvas();
+            Image i = setPicture();
+            canvasPanel.Children.Add(i);
             using (DataBaseConnection db = new DataBaseConnection(this.ConnectionString))
             {
                 using (IDataReader reader = db.ExecuteSqlCommand("select to_char(d.name), round(t.x, 20) as X , round(t.y,20) as Y from dorf d, TABLE(SDO_UTIL.GETVERTICES(d.d_location)) t ")) //where WHERE SDO_ANYINTERACT(d.location, ) = 'TRUE'
@@ -44,15 +52,26 @@ namespace DWR
                         Rectangle.Width = 10;
                         Rectangle.Height = 10;
                         Rectangle.ToolTip = reader[0].ToString();
-                        Rectangle.Fill = new SolidColorBrush(Colors.Red);
+                        ImageBrush ib = new ImageBrush();
+                        ib.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Resources/images.png"));
+                        Rectangle.Fill = ib;
                         Rectangle.MouseLeftButtonDown += redRectangle_MouseLeftButtonDown;
-                        Canvas.SetLeft(Rectangle, Double.Parse(reader[1].ToString()) * 10);
-                        Canvas.SetTop(Rectangle, Double.Parse(reader[2].ToString()) * 10);
+                        Canvas.SetLeft(Rectangle, Math.Abs(Double.Parse(reader[1].ToString()) * 20)); //Betrag einer Zahl
+                        Canvas.SetTop(Rectangle, Math.Abs(Double.Parse(reader[2].ToString()) * 20));
                         canvasPanel.Children.Add(Rectangle);
+                        Console.WriteLine(reader[0].ToString() + "X:" + reader[1].ToString() + "Y:" + reader[2].ToString());
                     }
                 }
             }
             scvMap.Content = canvasPanel;
+            
+        }
+
+        private Image setPicture() {
+            BitmapImage carBitmap = new BitmapImage(new Uri("pack://application:,,,/Resources/images.png"));
+            Image i = new Image();
+            i.Source = carBitmap;
+            return i;
         }
 
         private void redRectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
