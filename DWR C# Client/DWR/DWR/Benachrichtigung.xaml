@@ -1,0 +1,22 @@
+﻿<Window x:Class="DWR.Benachrichtigung"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Benachrichtigung" Height="300" Width="633.891">
+    <Grid>
+        <ListView x:Name="listÜbersicht" HorizontalAlignment="Left" Height="250" Margin="10,10,0,0" VerticalAlignment="Top" Width="272">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView x:Name="listDetail" HorizontalAlignment="Left" Height="250" Margin="287,10,0,0" VerticalAlignment="Top" Width="329">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
