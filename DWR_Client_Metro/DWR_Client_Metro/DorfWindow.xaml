@@ -1,0 +1,97 @@
+﻿<Controls:MetroWindow x:Name="Dorf_Window"  x:Class="DWR_Client_Metro.DorfWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="Dwr - Dorf Übersicht" Height="453.9" Width="728"
+        BorderThickness="0" 
+        GlowBrush="Black"
+        ResizeMode="NoResize"
+        
+        WindowTransitionsEnabled="False"
+        WindowStartupLocation="CenterScreen"   
+        WindowTitleBrush="Black" 
+       
+                      
+                     
+        ShowIconOnTitleBar="True" Icon="DWR-Resources/pixelart/oeb.png" 
+        Background="#FF727272">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="251*"/>
+            <RowDefinition Height="177*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="lblDorfName"  Content="Dorf Name" HorizontalAlignment="Left" Height="54" Margin="518,-1,-7,0" VerticalAlignment="Top" Width="197" FontSize="30" Foreground="White"/>
+        <ScrollViewer x:Name="pnlMap" HorizontalAlignment="Left" Height="298" VerticalAlignment="Top" Width="524" Grid.RowSpan="2" Margin="-11,0,0,0">
+            <ScrollViewer.Background>
+                <ImageBrush ImageSource="DWR-Resources/dorf_background.jpg"/>
+            </ScrollViewer.Background>
+        </ScrollViewer>
+        <ListBox x:Name="ListJobs" HorizontalAlignment="Left" Height="111" Margin="522,56,0,0" VerticalAlignment="Top" Width="190" Grid.Row="1"/>
+        
+        <DataGrid x:Name="GridGebäude" HorizontalAlignment="Left" AutoGenerateColumns="False" IsReadOnly="True" Height="111" Margin="129,56,0,0" VerticalAlignment="Top" Width="384" Grid.Row="1">
+           
+            
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Gebäude" Width="auto" Binding="{Binding name}"/>
+                <DataGridTextColumn Header="Level" Width="auto" Binding="{Binding level}"/>
+                <DataGridTemplateColumn Header="Bau">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding buttonBau}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Vorschau" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Path=thumpnail}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <DataGrid x:Name="GridDoerfer" HorizontalAlignment="Left" Height="111" Margin="10,56,0,0" VerticalAlignment="Top" Width="114" Grid.Row="1" Background="White"/>
+        <Rectangle x:Name="rectBev" HorizontalAlignment="Left" Height="232" Margin="522,66,0,0" Stroke="White" VerticalAlignment="Top" Width="190" Grid.RowSpan="2"/>
+        <Label x:Name="lblRessourcen" Content="Ressourcen" HorizontalAlignment="Left" Height="29" Margin="535,186,0,0" VerticalAlignment="Top" Width="86" Foreground="White"/>
+        <Label x:Name="lblHolz" Content="Holz:" HorizontalAlignment="Left" Height="30" Margin="568,215,0,0" VerticalAlignment="Top" Width="37" Foreground="White"/>
+        <Label x:Name="lblLehm" Content="Lehm:" HorizontalAlignment="Left" Height="30" Margin="568,240,0,0" VerticalAlignment="Top" Width="50" Grid.RowSpan="2" Foreground="White"/>
+        <Label x:Name="lblStein" Content="Stein:" HorizontalAlignment="Left" Height="32" Margin="568,14,0,0" VerticalAlignment="Top" Width="37" Grid.Row="1" Foreground="White"/>
+        <Label x:Name="lblAmountHolz" Content="...." HorizontalAlignment="Left" Height="25" Margin="654,215,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136" Foreground="White"/>
+        <Label x:Name="lblAmountLehm" Content="...." HorizontalAlignment="Left" Height="25" Margin="654,238,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136" Grid.RowSpan="2" Foreground="White"/>
+        <Label x:Name="lblAmountStein" Content="...." HorizontalAlignment="Left" Height="25" Margin="654,12,0,0" VerticalAlignment="Top" Width="54" RenderTransformOrigin="0.493,0.136" Grid.Row="1" Foreground="White"/>
+        <Label x:Name="lblArmy" Content="Truppen:" HorizontalAlignment="Left" Margin="535,66,0,0" VerticalAlignment="Top" Width="77" Foreground="White"/>
+        <Label x:Name="lblFighter" Content="Schwert:" HorizontalAlignment="Left" Margin="569,94,0,0" VerticalAlignment="Top" Width="78" Foreground="White"/>
+        <Label x:Name="lblAmountFighters" Content="..." HorizontalAlignment="Left" Margin="654,93,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.057,0.039" Width="46" Foreground="White"/>
+        <Label x:Name="lblRiders" Content="Reiter:" HorizontalAlignment="Left" Margin="569,120,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.042,-0.055" Width="41" Foreground="White"/>
+        <Label x:Name="lblAmountRiders" Content="..." HorizontalAlignment="Left" Margin="654,115,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.352,-0.742" Width="46" Foreground="White"/>
+        <Label x:Name="lblLancer" Content="Lanze:" HorizontalAlignment="Left" Height="31" Margin="569,143,0,0" VerticalAlignment="Top" Width="45" Foreground="White"/>
+        <Label x:Name="lblAmountLancer" Content="..." HorizontalAlignment="Left" Margin="654,143,0,0" VerticalAlignment="Top" Width="46" Foreground="White"/>
+        <Label x:Name="lblArcher" Content="Bogen:" HorizontalAlignment="Left" Height="31" Margin="570,166,0,0" VerticalAlignment="Top" Width="45" Foreground="White"/>
+        <Label x:Name="lblAmountArcher" Content="..." HorizontalAlignment="Left" Margin="654,171,0,0" VerticalAlignment="Top" Width="46" RenderTransformOrigin="0.5,2.391" Foreground="White"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="-23,163,0,-86" Grid.Row="1" VerticalAlignment="Top" Width="239" Source="DWR-Resources/pixelart/grass.png"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="216,163,0,-86" Grid.Row="1" VerticalAlignment="Top" Width="239" Source="DWR-Resources/pixelart/grass.png"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="417,163,0,-86" Grid.Row="1" VerticalAlignment="Top" Width="239" Source="DWR-Resources/pixelart/grass.png"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="593,163,-124,-86" Grid.Row="1" VerticalAlignment="Top" Width="239" Source="DWR-Resources/pixelart/grass.png"/>
+        <Image HorizontalAlignment="Left" Height="100" Margin="124,163,0,-86" Grid.Row="1" VerticalAlignment="Top" Width="239" Source="DWR-Resources/pixelart/grass.png"/>
+        <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="42" Margin="535,89,0,0" Source="DWR-Resources/pixelart/truppe_schwert.png" RenderTransformOrigin="0.615,0.704"/>
+        <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="42" Margin="522,115,0,0" Source="DWR-Resources/pixelart/truppe_reiter.png" RenderTransformOrigin="0.615,0.704"/>
+        <Image HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="42" Margin="551,137,0,0" Source="DWR-Resources/pixelart/truppe_lanze.png" RenderTransformOrigin="0.615,0.704"/>
+        <Image HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="35" Margin="542,158,0,0" Source="DWR-Resources/pixelart/truppe_bogen.png" RenderTransformOrigin="0.615,0.704"/>
+        <Image HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="35" Margin="535,214,0,0" Source="DWR-Resources/pixelart/Holz.png" RenderTransformOrigin="0.615,0.704"/>
+        <Image HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="35" Margin="535,242,0,0" Source="DWR-Resources/pixelart/Lehm.png" RenderTransformOrigin="0.615,0.704" Grid.RowSpan="2"/>
+        <Image HorizontalAlignment="Left" Height="28" VerticalAlignment="Top" Width="35" Margin="535,18,0,0" Source="DWR-Resources/pixelart/Stein.png" RenderTransformOrigin="0.615,0.704" Grid.Row="1"/>
+
+    </Grid>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button x:Name="btnMap" Content="Karte" Click="click_btnMap" />
+            <Button x:Name="btnBenachrichtigungen" Content="Benachrichtigungen" Click="click_btnBenachrichtigungen" />
+            <Button x:Name="btnStamm" Content="Stamm" Click="click_btnStamm" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+</Controls:MetroWindow>
