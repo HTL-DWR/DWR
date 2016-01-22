@@ -51,7 +51,7 @@ namespace DWR_Client_Metro
 
                 Canvas canvasBackgroundMap = new Canvas();
 
-      
+                   
                 BitmapImage carBitmap = new BitmapImage(new Uri("pack://application:,,,/DWR-Resources/dorf_background.jpg"));
 
                 rectBev.Fill = Brushes.Transparent;
@@ -115,6 +115,10 @@ namespace DWR_Client_Metro
                 //Image img = new Image();
                 //img.Source = new BitmapImage(new Uri("pack://application:,,,/DWR-Resources/pixelart/" + g.name.ToLower() + ".png"));
 
+                //Umlaut ä bei Hauptgebäude entfernen
+                g.name = g.name.Replace("ä", "ae");
+
+                Console.WriteLine("+++++++++" + g.name);
 
                 this.GridGebäude.Items.Add(new GebaeudeDataGridItem(g.name, g.lvl, bau, "pack://application:,,,/DWR-Resources/pixelart/" + g.name.ToLower() + ".png"));
 
@@ -137,6 +141,12 @@ namespace DWR_Client_Metro
                 Rectangle.Width = 80;
                 Rectangle.Height = 40;
                 ImageBrush ib = new ImageBrush();
+
+                //Umlaut ä bei Hauptgebäude entfernen
+                g.name = g.name.Replace("ä", "ae");
+
+                Console.WriteLine("----------" + g.name);
+
                 ib.ImageSource = new BitmapImage(new Uri("pack://application:,,,/DWR-Resources/pixelart/"+ g.name.ToLower()+".png"));
                 Rectangle.Fill = ib;
                 
@@ -144,13 +154,13 @@ namespace DWR_Client_Metro
 
                 switch (g.name.ToLower()) { 
                     case "hauptgebaeude":
-                        left = 230;
-                        top = 140;
+                        left = 340;
+                        top = 130;
                     break;
 
                     case "lehmgrube":
-                        left = 380;
-                        top = 120;
+                        left = 360;
+                        top = 190;
                     break;
 
                     case "holzfaeller":
@@ -158,8 +168,14 @@ namespace DWR_Client_Metro
                         top = 120;
                     break;
 
-                    case "kasserne":
+                    case "kaserne":
+                         left = 290;
+                        top = 50;
+                    break;
 
+                    case "steinmetz":
+                        left = 10;
+                        top = 10;
                     break;
                 }
 

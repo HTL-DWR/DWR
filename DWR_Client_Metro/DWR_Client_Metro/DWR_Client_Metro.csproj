@@ -162,8 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="DWR-Resources\pixelart\Holz.png" />
-    <Resource Include="DWR-Resources\pixelart\holzfaeller.png" />
-    <Resource Include="DWR-Resources\pixelart\Kaserne.png" />
     <Resource Include="DWR-Resources\pixelart\Lehm.png" />
     <Resource Include="DWR-Resources\pixelart\Stein.png" />
     <Resource Include="DWR-Resources\pixelart\grass.png" />
@@ -174,14 +172,17 @@
     <Resource Include="DWR-Resources\pixelart\pin2.png" />
     <Resource Include="DWR-Resources\pixelart\schwert.png" />
     <Resource Include="DWR-Resources\pixelart\wald.png" />
-    <Resource Include="DWR-Resources\pixelart\Steinmetz.png" />
     <Resource Include="DWR-Resources\pixelart\truppe_bogen.png" />
     <Resource Include="DWR-Resources\pixelart\truppe_lanze.png" />
     <Resource Include="DWR-Resources\pixelart\truppe_reiter.png" />
     <Resource Include="DWR-Resources\pixelart\truppe_schwert.png" />
-    <Content Include="Resources\song.wav" />
-    <Resource Include="DWR-Resources\pixelart\lehmgrube.png" />
+    <Resource Include="DWR-Resources\pixelart\pixel_gerald.png" />
     <Resource Include="DWR-Resources\pixelart\hauptgebaeude.png" />
+    <Resource Include="DWR-Resources\pixelart\holzfaeller.png" />
+    <Resource Include="DWR-Resources\pixelart\kaserne.png" />
+    <Resource Include="DWR-Resources\pixelart\lehmgrube.png" />
+    <Resource Include="DWR-Resources\pixelart\steinmetz.png" />
+    <Content Include="Resources\song.wav" />
     <Content Include="DWR-Resources\song.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

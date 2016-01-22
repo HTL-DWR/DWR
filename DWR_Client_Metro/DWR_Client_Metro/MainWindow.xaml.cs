@@ -39,8 +39,6 @@ namespace DWR_Client_Metro
             {
                 LoginStatus ls = WebServiceCom.newInstance().login(txtUser.Text, txtPassowrd.Password);
 
-                MessageBox.Show(ls.status);
-
                 if (ls.status.Contains("Username Falsch") || ls.status.Contains("Passwort Falsch"))
                 {
                     throw new Exception("Login fehlgeschlagen: " + ls.status);

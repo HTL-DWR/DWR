@@ -16,6 +16,7 @@ using DWR_Client_Metro.Model;
 using System.Windows.Media.Effects;
 using System.Data.OleDb;
 using System.Data;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace DWR_Client_Metro
 {
@@ -81,6 +82,21 @@ namespace DWR_Client_Metro
             lblClan.Content = currentDorf.clan;
             lblPlayer.Content = currentDorf.owner;
             lblAmountArcher.Content = currentDorf.truppen.bogen;
+        }
+
+        private async void btnFight_Click(object sender, RoutedEventArgs e)
+        {
+             await this.ShowMessageAsync("Angriff!", "Das Dorf '" + lblDorfName.Content + "' von '" + lblPlayer.Content + "' wird angegriffen!!!");
+        }
+
+        private async void btnSupport_Click(object sender, RoutedEventArgs e)
+        {
+            await this.ShowMessageAsync("Unterstützung!", "Das Dorf '" + lblDorfName.Content + "' von '" + lblPlayer.Content + "' wird jetzt von dir unterstützt!!!");
+        }
+
+        private async void btnTrade_Click(object sender, RoutedEventArgs e)
+        {
+            await this.ShowMessageAsync("Handel!", "Du hadelst jetzt mit dem Dorf '" + lblDorfName.Content + "' von '" + lblPlayer.Content + "'!!!");
         }
     }
 }

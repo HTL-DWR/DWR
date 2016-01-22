@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-\\Mac\Home\Desktop\DWR_Client_Metro\DWR_Client_Metro\obj\Debug\
+\\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\obj\Debug\
 DWR_Client_Metro
 none
 false
 DEBUG;TRACE
-\\Mac\Home\Desktop\DWR_Client_Metro\DWR_Client_Metro\App.xaml
+\\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\App.xaml
 41472614700
 2-1465644643
 29-533724370
-16-600569955
+16-2121102106
 DorfWindow.xaml;MainWindow.xaml;MapWindow.xaml;Resources\Icons.xaml;
 
 False

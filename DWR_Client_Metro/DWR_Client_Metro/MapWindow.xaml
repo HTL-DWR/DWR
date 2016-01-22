@@ -47,18 +47,18 @@
         <Image HorizontalAlignment="Left" Height="40" Margin="201,541,0,-23" VerticalAlignment="Top" Width="242" Source="DWR-Resources/pixelart/grass.png"/>
         <Image HorizontalAlignment="Left" Height="24" Margin="401,527,0,0" VerticalAlignment="Top" Width="2"/>
         <Image HorizontalAlignment="Left" Height="40" Margin="386,541,-36,-23" VerticalAlignment="Top" Width="242" Source="DWR-Resources/pixelart/grass.png"/>
-      
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,404,0,0" Height="38" RenderTransformOrigin="0.692,-0.763">
+
+        <Button x:Name="btnFight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,404,0,0" Height="38" RenderTransformOrigin="0.692,-0.763" Click="btnFight_Click">
             <StackPanel>
                 <Image Source="DWR-Resources/pixelart/schwert.png"/>
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,451,0,0" Height="38" RenderTransformOrigin="0.692,-0.763">
+        <Button  x:Name="btnSupport" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,451,0,0" Height="38" RenderTransformOrigin="0.692,-0.763" Click="btnSupport_Click">
             <StackPanel>
                 <Image Source="DWR-Resources/pixelart/oeb.png"/>
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,500,0,0" Height="38" RenderTransformOrigin="0.692,-0.763">
+        <Button  x:Name="btnTrade" HorizontalAlignment="Left" VerticalAlignment="Top" Width="39" Margin="364,500,0,0" Height="38" RenderTransformOrigin="0.692,-0.763" Click="btnTrade_Click">
             <StackPanel>
                 <Image Source="DWR-Resources/pixelart/Holz.png"/>
             </StackPanel>
