@@ -96,7 +96,7 @@ namespace DWR_Client_Metro
 
         private async void btnTrade_Click(object sender, RoutedEventArgs e)
         {
-            await this.ShowMessageAsync("Handel!", "Du hadelst jetzt mit dem Dorf '" + lblDorfName.Content + "' von '" + lblPlayer.Content + "'!!!");
+            await this.ShowMessageAsync("Handel!", "Du handelst jetzt mit dem Dorf '" + lblDorfName.Content + "' von '" + lblPlayer.Content + "'!!!");
         }
     }
 }

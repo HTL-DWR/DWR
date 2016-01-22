@@ -152,38 +152,88 @@
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DWR-Resources\dorf_background.jpg" />
+    <Resource Include="DWR-Resources\dorf_background.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DWR-Resources\dwr_logo.png" />
+    <Resource Include="DWR-Resources\dwr_logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DWR-Resources\map_background.PNG" />
+    <Resource Include="DWR-Resources\map_background.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="DWR-Resources\pixelart\Holz.png" />
-    <Resource Include="DWR-Resources\pixelart\Lehm.png" />
-    <Resource Include="DWR-Resources\pixelart\Stein.png" />
-    <Resource Include="DWR-Resources\pixelart\grass.png" />
-    <Resource Include="DWR-Resources\pixelart\its.png" />
-    <Resource Include="DWR-Resources\pixelart\map.png" />
-    <Resource Include="DWR-Resources\pixelart\oeb.png" />
-    <Resource Include="DWR-Resources\pixelart\oes.png" />
-    <Resource Include="DWR-Resources\pixelart\pin2.png" />
-    <Resource Include="DWR-Resources\pixelart\schwert.png" />
-    <Resource Include="DWR-Resources\pixelart\wald.png" />
-    <Resource Include="DWR-Resources\pixelart\truppe_bogen.png" />
-    <Resource Include="DWR-Resources\pixelart\truppe_lanze.png" />
-    <Resource Include="DWR-Resources\pixelart\truppe_reiter.png" />
-    <Resource Include="DWR-Resources\pixelart\truppe_schwert.png" />
-    <Resource Include="DWR-Resources\pixelart\pixel_gerald.png" />
-    <Resource Include="DWR-Resources\pixelart\hauptgebaeude.png" />
-    <Resource Include="DWR-Resources\pixelart\holzfaeller.png" />
-    <Resource Include="DWR-Resources\pixelart\kaserne.png" />
-    <Resource Include="DWR-Resources\pixelart\lehmgrube.png" />
-    <Resource Include="DWR-Resources\pixelart\steinmetz.png" />
+    <Resource Include="DWR-Resources\pixelart\Holz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\Lehm.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\Stein.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\its.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\oeb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\oes.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\pin2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\schwert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\wald.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\truppe_bogen.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\truppe_lanze.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\truppe_reiter.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\truppe_schwert.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\pixel_gerald.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\hauptgebaeude.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\holzfaeller.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\kaserne.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\lehmgrube.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="DWR-Resources\pixelart\steinmetz.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\song.wav" />
-    <Content Include="DWR-Resources\song.wav" />
+    <Content Include="DWR-Resources\song.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

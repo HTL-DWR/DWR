@@ -47,3 +47,4 @@
 \\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\bin\Debug\System.Windows.Interactivity.dll
 \\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\bin\Debug\MahApps.Metro.pdb
 \\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\bin\Debug\MahApps.Metro.xml
+\\Mac\Home\DWR\DWR_Client_Metro\DWR_Client_Metro\bin\Debug\DWR-Resources\song.wav

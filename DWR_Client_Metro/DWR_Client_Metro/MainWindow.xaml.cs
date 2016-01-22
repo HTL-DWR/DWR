@@ -28,8 +28,8 @@ namespace DWR_Client_Metro
         {
             InitializeComponent();
 
-            SoundPlayer player = new SoundPlayer(@"../../DWR-Resources/song.wav");
-            player.Play();
+           // SoundPlayer player = new SoundPlayer(@"../../DWR-Resources/song.wav");
+           // player.Play();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
