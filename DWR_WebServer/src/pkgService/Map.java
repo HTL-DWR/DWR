@@ -11,6 +11,7 @@ import pkgDatabase.DatabaseConnection;
 import pkgModel.DorfMap;
 import pkgModel.MapDorfCollection;
 import pkgModel.NamespaceDWR;
+import pkgModel.ResponseObject;
 
 @Path("/Map")
 public class Map {
@@ -23,8 +24,11 @@ public class Map {
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})//@Produces({MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML}) 
-	public NamespaceDWR getMap() {
-		NamespaceDWR retVal = new NamespaceDWR(new MapDorfCollection());
+	public ResponseObject getMap() {
+		ResponseObject retVal = new ResponseObject();
+		retVal.prepareRO();
+		NamespaceDWR ndwr = new NamespaceDWR();
+		ndwr.setMdc(new MapDorfCollection());
 		ResultSet rs = null;
 		
 		try {
@@ -42,13 +46,14 @@ public class Map {
 				dm.setOwner(null);
 				dm.setTruppen(null);
 				
-				retVal.getMdc().getDoerfer().add(dm);
+				ndwr.getMdc().getDoerfer().add(dm);
 			}
+			retVal.setData(ndwr);
+			retVal.setOk(true);
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
-			retVal.getMdc().getDoerfer().add(new DorfMap());
-			return retVal;
+			retVal.setErrormsg(ex.getMessage());
+			retVal.setData(null);
 		}
 		
 		return retVal;

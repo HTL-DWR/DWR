@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
 import pkgModel.*;
+import pkgSessionHandling.SessionDB;
 
 
 @Path("/DorfDetailFull")
@@ -23,23 +24,35 @@ public class DorfDetailFull {
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON}) 
-	public Dorf getDorfDetailFull(@QueryParam("id") int dorfId) {
-		Dorf retVal = null;
+	public ResponseObject getDorfDetailFull(@QueryParam("id") int dorfId, @QueryParam("sessionid") int sessionid) {
+		ResponseObject retVal = null;
 		ResultSet rs = null;
+		SessionDB sdb = SessionDB.newInstance();
+		
+		retVal.prepareRO();
 		
 		try {
+			
+			if(!sdb.checkSession(sessionid)){
+				throw new Exception("no such active session");
+			}
+			
 			//Name & id
-			rs = connection.getData("select id, name from dorf where id = " + dorfId);
+			rs = connection.getData("select id, name, owner from dorf where id = " + dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no dorfname found");
 			}
 			
-			retVal = new Dorf();
-			retVal.setId(rs.getInt(1));
-			retVal.setName(rs.getString(2));
+			Dorf d = new Dorf();
+			d.setId(rs.getInt(1));
+			d.setName(rs.getString(2));
+			//retVal.setData(d);
 			
-			//Gebäude
+			if(!rs.getString(3).trim().equals(sdb.getSession_User(sessionid).getUname().trim())){
+				throw new Exception("You have no permission to view this village");
+			}
+			//Gebï¿½ude
 			rs = connection.getData("select gt.name, b.lvl from dorf d " +
 					"inner join bau b on b.did=d.id inner join geb_typ gt on b.tid = gt.id where d.id = " + dorfId);
 			
@@ -48,7 +61,7 @@ public class DorfDetailFull {
 			}
 			
 			do {
-				retVal.getGebaude().add(new Gebaeude(rs.getString(1), rs.getInt(2)));
+				d.getGebaude().add(new Gebaeude(rs.getString(1), rs.getInt(2)));
 			} while(rs.next());
 			
 			//Rohstoffe
@@ -59,7 +72,7 @@ public class DorfDetailFull {
 				throw new Exception("no rohstoffe found");
 			}
 			
-			retVal.setRohstoffe(new Rohstoffe(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
+			d.setRohstoffe(new Rohstoffe(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
 			
 			//eigene Truppen
 			rs = connection.getData("select t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
@@ -70,23 +83,26 @@ public class DorfDetailFull {
 				throw new Exception("no truppen found");
 			}
 			
-			retVal.setTruppen(new Truppen(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));
+			d.setTruppen(new Truppen(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));
 				
-			//Unterstützungen
+			//Unterstï¿½tzungen
 			rs = connection.getData("select t.owner, t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
 					"inner join movable m on m.id = t.id  " +
 					"inner join dorf d on d.id = m.did " +
 					"where not t.owner = d.owner and d.id= " + dorfId);
 			
 			while(rs.next()) {
-				retVal.getUnterstuetzungen().add(new Unterstuetzung(rs.getString(1), new Truppen(rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getInt(5))));
+				d.getUnterstuetzungen().add(new Unterstuetzung(rs.getString(1), new Truppen(rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getInt(5))));
 			}
+			
+			retVal.setData(d);
+			retVal.setOk(true);
 		}
 		catch(Exception ex) {
-			ex.printStackTrace();
-			return new Dorf();
+			retVal.setErrormsg(ex.getMessage());
+			retVal.setData(null);
 		}
-		
+	
 		return retVal;
 	}
 }

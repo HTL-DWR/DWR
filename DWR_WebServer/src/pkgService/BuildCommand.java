@@ -9,6 +9,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
+import pkgModel.ResponseObject;
+import pkgSessionHandling.SessionDB;
 
 
 @Path("/BuildCommand")
@@ -24,16 +26,32 @@ public class BuildCommand {
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON}) 
-	public String getIsBeingBuild(@QueryParam("dorfid") int did, @QueryParam("GebTyp") String gebtyp) {
-		String retVal = null;
+	public ResponseObject getIsBeingBuild(@QueryParam("dorfid") int did, @QueryParam("GebTyp") String gebtyp, @QueryParam("sessionid") int sessionid) {
+		ResponseObject retVal = new ResponseObject();
 		ResultSet rs = null;
+		SessionDB sdb = SessionDB.newInstance();
+		
+		retVal.prepareRO();
 		
 		try {
+			if(!sdb.checkSession(sessionid)){
+				throw new Exception("no such active session");
+			}
+			System.out.println("++++++++"+did);
+			rs= connection.getData("select owner from dorf where id="+did);
+			if(!rs.next()){
+				throw new Exception ("no such village found");
+			}
+			if(!rs.getString(1).trim().equals(sdb.getSession_User(sessionid).getUname().trim()));
+			
+			
+			
 			connection.getDataWithExceptions("BEGIN BUILD_COMMAND('"+did+"','"+gebtyp+"'); END;");
-			retVal = "Build successful!";
+			retVal.setOk(true);
 		}
 		catch(Exception ex) {
-			retVal = "Build failed! " + ex.getMessage();
+			retVal.setErrormsg(ex.getMessage());
+			retVal.setData(null);
 		}
 		return retVal;
 	}

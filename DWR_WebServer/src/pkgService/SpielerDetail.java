@@ -9,6 +9,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
+import pkgModel.ResponseObject;
 import pkgModel.Spieler;
 
 @Path("/SpielerDetail")
@@ -23,29 +24,34 @@ public class SpielerDetail {
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON}) 
-	public Spieler getSpielerDetail(@QueryParam("username") String username) {
+	public ResponseObject getSpielerDetail(@QueryParam("username") String username) {
 		
-		Spieler retVal = null;
+		ResponseObject retVal = null;
 		ResultSet rs = null;
+		
+		retVal.prepareRO();
+		Spieler s = null;
 		
 		try {
 			rs = connection.getData("select s.uname, d.id  from spieler s inner join dorf d on d.owner = s.uname where s.uname = '" + username + "'");
 			
 			if(rs.next()) {
-				retVal = new Spieler(rs.getString(1));
-				retVal.getDoerfer().getDorf().add(rs.getInt(2));
+				s = new Spieler(rs.getString(1));
+				s.getDoerfer().add(rs.getInt(2));
 				
 				while(rs.next()) {
-					retVal.getDoerfer().getDorf().add(rs.getInt(2));
+					s.getDoerfer().add(rs.getInt(2));
 				}
 			}
 			else {
-				retVal = new Spieler();	
+				throw new Exception("Player does not exist");	
 			}
+			retVal.setData(s);
+			retVal.setOk(true);
 		}
 		catch(Exception ex) {
-			ex.printStackTrace();
-			return new Spieler();
+			retVal.setErrormsg(ex.getMessage());
+			retVal.setData(null);
 		}
 		
 		return retVal;

@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
 import pkgModel.DorfMap;
+import pkgModel.ResponseObject;
 import pkgModel.Truppen;
 
 @Path("/DorfDetailMap")
@@ -22,10 +23,12 @@ public class DorfDetailMap {
 	}
 	
 	@GET
-	@Produces({MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML}) 
-	public DorfMap getDorfDetailMap(@QueryParam("id") int dorfId) {
-		DorfMap retVal = null;
+	@Produces({MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON}) 
+	public ResponseObject getDorfDetailMap(@QueryParam("id") int dorfId) {
+		ResponseObject retVal = null;
 		ResultSet rs = null;
+		
+		retVal.prepareRO();
 		
 		try {
 			//Id, Name & Owner
@@ -35,13 +38,13 @@ public class DorfDetailMap {
 				throw new Exception("no dorfname found");
 			}
 			
-			retVal = new DorfMap();
-			retVal.setId(rs.getInt(1));
-			retVal.setName(rs.getString(2));
-			retVal.setOwner(rs.getString(3));
+			DorfMap dm = new DorfMap();
+			dm.setId(rs.getInt(1));
+			dm.setName(rs.getString(2));
+			dm.setOwner(rs.getString(3));
 			
 			//(eigene)Truppen
-			//TODO: Unterstützung zu den eigenen addieren!!!!
+			//TODO: Unterstï¿½tzung zu den eigenen addieren!!!!
 			rs = connection.getData("select t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
 					"inner join movable m on m.id = t.id  " +
 					"inner join dorf d on d.id = m.did where d.id = " + dorfId); 
@@ -50,11 +53,13 @@ public class DorfDetailMap {
 				throw new Exception("no truppen found");
 			}
 			
-			retVal.setTruppen(new Truppen(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));			
+			dm.setTruppen(new Truppen(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));			
+			retVal.setData(dm);
+			retVal.setOk(true);
 		}
 		catch (Exception ex) {
-			ex.printStackTrace();
-			return new DorfMap();
+			retVal.setErrormsg(ex.getMessage());
+			retVal.setData(null);
 		} 
 	
 		return retVal;
