@@ -32,7 +32,7 @@ public class DorfDetailMap {
 		
 		try {
 			//Id, Name & Owner
-			rs = connection.getData("select id, name, owner from dorf where id = " + dorfId);
+			rs = connection.getDorf(dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no dorfname found");
@@ -45,9 +45,7 @@ public class DorfDetailMap {
 			
 			//(eigene)Truppen
 			//TODO: Unterst�tzung zu den eigenen addieren!!!!
-			rs = connection.getData("select t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
-					"inner join movable m on m.id = t.id  " +
-					"inner join dorf d on d.id = m.did where d.id = " + dorfId); 
+			rs = connection.getAllUnitsInDorf(dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no truppen found");

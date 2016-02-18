@@ -33,7 +33,7 @@ public class Map {
 		
 		try {
 			//Name, X & Y (Gerundet)
-			rs = connection.getData("select to_char(d.id), round(t.x, 20) as X , round(t.y,20) as Y from dorf d, TABLE(SDO_UTIL.GETVERTICES(d.d_location)) t");
+			rs = connection.getMap();
 	
 			while(rs.next()) {
 				DorfMap dm = new DorfMap();

@@ -38,7 +38,7 @@ public class DorfDetailFull {
 			}
 			
 			//Name & id
-			rs = connection.getData("select id, name, owner from dorf where id = " + dorfId);
+			rs = connection.getDorf(dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no dorfname found");
@@ -53,8 +53,7 @@ public class DorfDetailFull {
 				throw new Exception("You have no permission to view this village");
 			}
 			//Geb�ude
-			rs = connection.getData("select gt.name, b.lvl from dorf d " +
-					"inner join bau b on b.did=d.id inner join geb_typ gt on b.tid = gt.id where d.id = " + dorfId);
+			rs = connection.getDorfGeb(dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no gebaeude found");
@@ -65,9 +64,7 @@ public class DorfDetailFull {
 			} while(rs.next());
 			
 			//Rohstoffe
-			rs = connection.getData("select r.holz, r.stein, r.lehm from resgruppe r " +
-					"inner join movable m on m.id = r.id  inner join dorf d on d.id = m.did where d.id = " + dorfId);
-			
+			rs = connection.getDorfRes(dorfId);
 			if(!rs.next()) {
 				throw new Exception("no rohstoffe found");
 			}
@@ -75,9 +72,7 @@ public class DorfDetailFull {
 			d.setRohstoffe(new Rohstoffe(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
 			
 			//eigene Truppen
-			rs = connection.getData("select t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
-					"inner join movable m on m.id = t.id  " +
-					"inner join dorf d on d.id = m.did where t.owner = d.owner and d.id = " + dorfId); 
+			rs = connection.getDorfUnits(dorfId);
 			
 			if(!rs.next()) {
 				throw new Exception("no truppen found");
@@ -86,10 +81,7 @@ public class DorfDetailFull {
 			d.setTruppen(new Truppen(rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4)));
 				
 			//Unterst�tzungen
-			rs = connection.getData("select t.owner, t.schwert, t.reiter, t.bogen, t.lanze from truppe t " +
-					"inner join movable m on m.id = t.id  " +
-					"inner join dorf d on d.id = m.did " +
-					"where not t.owner = d.owner and d.id= " + dorfId);
+			rs = connection.getDorfReinforcements(dorfId);
 			
 			while(rs.next()) {
 				d.getUnterstuetzungen().add(new Unterstuetzung(rs.getString(1), new Truppen(rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getInt(5))));

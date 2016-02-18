@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
 import pkgModel.LoginStatus;
+import pkgModel.ResponseObject;
 
 @Path("/Credentials")
 public class Credentials {
@@ -27,13 +28,15 @@ public class Credentials {
 
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
-	public LoginStatus check(@QueryParam("username") String username, @QueryParam("password_md5") String password_md5) {
+	public ResponseObject check(@QueryParam("username") String username, @QueryParam("password_md5") String password_md5) {
+		ResponseObject ret = new ResponseObject();
+		ret.prepareRO();
 		LoginStatus retVal = null;
 		ResultSet rs = null;
 
 
 		try {
-			rs = connection.getData("select uname,decode(passwd_hash, '" + password_md5 + "', 'true', 'false') from spieler where uname = '" + username + "'");
+			rs = connection.getCredentials(username, password_md5);
 
 			if(rs.next()) {
 
@@ -41,35 +44,54 @@ public class Credentials {
 
 				if(rs.getString(2).equals("false")) {
 					retVal = new LoginStatus("Password Falsch", username, "no id");
+					ret.setData(retVal);
+					ret.setOk(false);
+					ret.setErrormsg("Passwort Falsch");
 				}
 				else if(rs.getString(2).equals("true")){
 					retVal = new LoginStatus ("Login Erfolgreich", username, "5555");
+					ret.setData(retVal);
+					ret.setOk(true);
 				}
 			}
 			else {
 				retVal = new LoginStatus("Username Falsch", username, "no id");
+				ret.setData(retVal);
+				ret.setOk(false);
+				ret.setErrormsg("Username Falsch");
 			}
+			
+			
+			
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return new LoginStatus("Internal System Error: Database unreachable", " ", "no id" );
+			ret.setOk(false);
+			ret.setErrormsg("Internal System Error: Database unreachable"+e.getMessage());
+			//e.printStackTrace();
+			//return new LoginStatus("Internal System Error: Database unreachable", " ", "no id" );
 		}
 
-		System.out.println(retVal.toString());
-		return retVal;
+		//System.out.println(retVal.toString());
+		return ret;
 	}
 
 	@PUT
 	@Produces({MediaType.APPLICATION_XML, MediaType.TEXT_HTML, MediaType.TEXT_XML, MediaType.APPLICATION_JSON})
-	public String registerUser(@QueryParam("username") String username, @QueryParam("password_md5") String password_md5) {
+	public ResponseObject registerUser(@QueryParam("username") String username, @QueryParam("password_md5") String password_md5) {
 
+		ResponseObject ro = new ResponseObject();
+		ro.prepareRO();
+		
 		try {
-			connection.insert("BEGIN CREATE_NEW_USER('" + username + "','Dorf von " + username + "' , '" + password_md5 + "'); END;");
+			connection.registerUser(username, password_md5);
+			ro.setOk(true);
+			ro.setData("New User created");
 		}
 		catch(Exception ex) {
-			return "Internal System Error: " + ex.getMessage();
+			ro.setErrormsg("Internal System Error: " + ex.getMessage());
+			ro.setOk(false);
 		}
 
-		return "New User created";
+		return ro;
 	}
 }

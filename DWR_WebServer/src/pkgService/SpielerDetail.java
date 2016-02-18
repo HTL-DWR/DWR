@@ -33,7 +33,7 @@ public class SpielerDetail {
 		Spieler s = null;
 		
 		try {
-			rs = connection.getData("select s.uname, d.id  from spieler s inner join dorf d on d.owner = s.uname where s.uname = '" + username + "'");
+			rs = connection.getSpielerDetail(username);
 			
 			if(rs.next()) {
 				s = new Spieler(rs.getString(1));

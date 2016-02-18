@@ -1,11 +1,13 @@
 package pkgModel;
 
+import java.util.Vector;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement (name = "DWR")
 public class Spieler {
 	private String username;
-	private DoerferIDs doerfer = new DoerferIDs();
+	private Vector<Integer> doerfer = new Vector<Integer>();
 	
 	public Spieler() {
 		super();
@@ -17,17 +19,17 @@ public class Spieler {
 		this.username = username;
 	}
 	
-	public Spieler(String username, DoerferIDs doerfer) {
+	public Spieler(String username, Vector<Integer> doerfer) {
 		super();
 		this.username = username;
 		this.doerfer = doerfer;
 	}
 
-	public DoerferIDs getDoerfer() {
+	public Vector<Integer> getDoerfer() {
 		return doerfer;
 	}
 
-	public void setDoerfer(DoerferIDs doerfer) {
+	public void setDoerfer(Vector<Integer> doerfer) {
 		this.doerfer = doerfer;
 	}
 

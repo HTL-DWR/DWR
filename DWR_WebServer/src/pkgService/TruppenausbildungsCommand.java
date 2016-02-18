@@ -1,4 +1,4 @@
-package pkgService;
+/*package pkgService;
 
 import java.sql.ResultSet;
 
@@ -10,23 +10,22 @@ import javax.ws.rs.core.MediaType;
 
 import pkgDatabase.DatabaseConnection;
 import pkgModel.ResponseObject;
+import pkgModel.Truppen;
 import pkgSessionHandling.SessionDB;
 
+@Path("/TruppenCommand")
+public class TruppenausbildungsCommand {
 
-@Path("/BuildCommand")
-public class BuildCommand {
-	
 	static DatabaseConnection connection= null;
 	
-	
-	public BuildCommand(){
+	public TruppenausbildungsCommand(){
 		super();
 		connection =new DatabaseConnection("d5bhifs11", "d5bhifs11");
 	}
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON}) 
-	public ResponseObject Build(@QueryParam("dorfid") int did, @QueryParam("GebTyp") String gebtyp, @QueryParam("sessionid") int sessionid) {
+	public ResponseObject Recruit(@QueryParam("dorfid") int did, @QueryParam("TruppenTyp") Truppen cargo, @QueryParam("sessionid") int sessionid) {
 		ResponseObject retVal = new ResponseObject();
 		ResultSet rs = null;
 		SessionDB sdb = SessionDB.newInstance();
@@ -43,7 +42,7 @@ public class BuildCommand {
 				throw new Exception ("no such village found");
 			}
 			if(!rs.getString(1).trim().equals(sdb.getSession_User(sessionid).getUname().trim()));
-			connection.BuildCommand(did, gebtyp);
+			connection.RecruitCommand(did, cargo);
 			retVal.setOk(true);
 		}
 		catch(Exception ex) {
@@ -52,5 +51,5 @@ public class BuildCommand {
 		}
 		return retVal;
 	}
-	
 }
+*/
