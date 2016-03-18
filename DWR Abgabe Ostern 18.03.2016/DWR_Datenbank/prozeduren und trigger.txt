@@ -1,0 +1,786 @@
+create or replace PROCEDURE UPDATE_RESOURCES AS 
+x number;
+y number;
+td number;
+lehmgrube number;
+holzfaeller number;
+steinmetz number;
+BEGIN
+
+
+
+for eintrag in (select d.last_res_update,m.did as did,r.id as id,r.lehm,r.holz,r.stein from RESGRUPPE r inner join movable m on r.id=m.id inner join dorf d on d.id=m.did ) LOOP
+
+select NVL(lvl,0) into lehmgrube from BAU b inner join geb_typ t on t.id=b.tid where t.name='Lehmgrube' and b.did=eintrag.did;
+select NVL(lvl,0) into holzfaeller from BAU b inner join geb_typ t on t.id=b.tid where t.name='Holzfaeller' and b.did=eintrag.did;
+select NVL(lvl,0) into steinmetz from BAU b inner join geb_typ t on t.id=b.tid where t.name='Steinmetz' and b.did=eintrag.did;
+
+
+
+select time_diff(CURRENT_TIMESTAMP,eintrag.last_res_update) into td from dual;
+--dbms_output.put_line ('new lehm: '||(eintrag.lehm+lehmgrube*3*td)||'asdf');
+update resgruppe set  lehm=eintrag.lehm+lehmgrube*3*td,HOLZ=eintrag.holz+holzfaeller*3*td,STEIN=eintrag.stein+steinmetz*3*td where id=eintrag.id;
+update dorf set last_res_update=CURRENT_TIMESTAMP where id=eintrag.did;
+end loop;
+
+for eintrag in (select * from dorf d where id not in (select did from resgruppe r inner join movable m on m.id=r.id )) LOOP
+
+select NVL(lvl,0) into lehmgrube from BAU b inner join geb_typ t on t.id=b.tid where t.name='Lehmgrube' and b.did=eintrag.id;
+select NVL(lvl,0) into holzfaeller from BAU b inner join geb_typ t on t.id=b.tid where t.name='Holzfaeller' and b.did=eintrag.id;
+select NVL(lvl,0) into steinmetz from BAU b inner join geb_typ t on t.id=b.tid where t.name='Steinmetz' and b.did=eintrag.id;
+
+select MAX(id)+1 into x from Movable;
+select time_diff(eintrag.last_res_update,CURRENT_TIMESTAMP) into td from dual;
+insert into Movable(id,did) values(x,eintrag.id);
+insert into RESGRUPPE(id,holz,stein,lehm) values(x,holzfaeller*3*td,steinmetz*3*td,lehmgrube*3*td);
+update dorf set last_res_update=CURRENT_TIMESTAMP where id=eintrag.id;
+end loop;
+
+
+END UPDATE_RESOURCES;
+
+---------------------geht glaub ich nicht, bin mir nicht sicher-----------------------------------------------------------------------------------
+create or replace TRIGGER AUTO_ADD 
+AFTER INSERT OR UPDATE OF ID ON RESGRUPPE FOR EACH ROW
+
+BEGIN
+SYS.DBMS_OUTPUT.PUT_LINE('triggered');
+insert into debuginsertsfortriggertest(text) values ('triggered'||:new.id);
+for additional_dorf_res in (select m.id from resgruppe r inner join movable m on r.id=m.id where m.did in (select did from movable m where id=:new.id)) loop
+  ADD_RESOURCES(additional_dorf_res.id,:new.id);
+end loop;
+
+END;
+-----------------------------------------------------------------------------------------------------------
+
+create or replace PROCEDURE ADD_RESOURCES 
+(
+  DEST IN NUMBER 
+, SOURCE IN NUMBER 
+) AS 
+
+h number;
+l number;
+s number;
+BEGIN
+  select holz,stein,lehm into h,s,l from RESGRUPPE where ID = SOURCE;
+  update resgruppe set holz=holz+h, stein = stein+s, lehm = lehm+l where id=DEST;
+  delete resgruppe where id=source;
+  delete movable where id=source;
+  NULL;
+END ADD_RESOURCES;
+
+
+---------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION time_diff (
+DATE_1 IN timestamp, DATE_2 IN timestamp) RETURN NUMBER IS
+ 
+NDATE_1   NUMBER;
+NDATE_2   NUMBER;
+NSECOND_1 NUMBER(5,0);
+NSECOND_2 NUMBER(5,0);
+ 
+BEGIN
+  -- Get Julian date number from first date (DATE_1)
+  NDATE_1 := TO_NUMBER(TO_CHAR(DATE_1, 'J'));
+ 
+  -- Get Julian date number from second date (DATE_2)
+  NDATE_2 := TO_NUMBER(TO_CHAR(DATE_2, 'J'));
+ 
+  -- Get seconds since midnight from first date (DATE_1)
+  NSECOND_1 := TO_NUMBER(TO_CHAR(DATE_1, 'SSSSS'));
+ 
+  -- Get seconds since midnight from second date (DATE_2)
+  NSECOND_2 := TO_NUMBER(TO_CHAR(DATE_2, 'SSSSS'));
+ 
+  RETURN ABS((((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)));
+END time_diff;
+
+
+
+------------------------------------------------------------------
+create or replace function CREATE_RESOURCE
+(
+  HOLZ IN NUMBER 
+, Stein IN NUMBER 
+, Lehm IN NUMBER 
+) 
+return number
+IS 
+x number;
+BEGIN
+
+  select movable_id.nextval into x from dual;
+  insert into movable(id,did) values(x,null);
+  insert into resgruppe(id,holz,stein,lehm) values(x,HOLZ,Stein,Lehm);
+  return x;
+END CREATE_RESOURCE;
+----------------------------------------------------------------------------
+create or replace function CREATE_TRUPPE 
+(
+  schwert IN NUMBER 
+, reiter IN NUMBER 
+, bogen IN NUMBER 
+, lanze IN NUMBER 
+) 
+return number
+Is
+x number;
+BEGIN
+
+  select movable_id.nextval into x from dual;
+  insert into movable(id,did) values(x,null);
+  insert into truppe(id,schwert,reiter,bogen,lanze,owner) values(x,schwert,reiter,bogen,lanze,null);
+  return x;
+END CREATE_TRUPPE;
+
+---------------------------------ist event abgelaufen?----------------------------------------------
+create or replace FUNCTION is_in_past (
+DATE_1 IN timestamp) RETURN number IS
+ 
+NDATE_1   NUMBER;
+NDATE_2   NUMBER;
+NSECOND_1 NUMBER(5,0);
+NSECOND_2 NUMBER(5,0);
+DATE_2 timestamp;
+ 
+BEGIN
+  DATE_2 :=CURRENT_TIMESTAMP;
+  -- Get Julian date number from first date (DATE_1)
+  NDATE_1 := TO_NUMBER(TO_CHAR(DATE_1, 'J'));
+ 
+  -- Get Julian date number from second date (DATE_2)
+  NDATE_2 := TO_NUMBER(TO_CHAR(DATE_2, 'J'));
+ 
+  -- Get seconds since midnight from first date (DATE_1)
+  NSECOND_1 := TO_NUMBER(TO_CHAR(DATE_1, 'SSSSS'));
+ 
+  -- Get seconds since midnight from second date (DATE_2)
+  NSECOND_2 := TO_NUMBER(TO_CHAR(DATE_2, 'SSSSS'));
+ 
+  --RETURN (((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)) > 0;
+  
+  if (((NDATE_2 - NDATE_1) * 86400)+(NSECOND_2 - NSECOND_1)) > 0 then
+    return 1;--true
+  else 
+  return 0;--false
+  end if;
+  
+END is_in_past;
+
+-------------------------------------------------------------
+create or replace function CREATE_bew_event 
+(
+dauer in number,
+von_dorf in number,
+nach_dorf in number,
+cargo in number,
+art in varchar2
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+BEGIN
+
+  x:=-1;
+  select COUNT(*) into istruppe from truppe where id=cargo;
+  select COUNT(*) into rescnt from resgruppe where id=cargo;
+  if ( istruppe = 1 AND (art='sup' or art='atk') )or (istruppe = 0 and art='res' and 1=rescnt  ) then
+     x :=event_id.nextval;
+     insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer/24/60/60);--checken ob das wohl nicht integer mäßig abgeschnitten wird!!!
+     insert into bew_event(id,von_dorf,nach_dorf,cargo,art) values (x,von_dorf,nach_dorf,cargo,art);
+  else 
+    DBMS_OUTPUT.PUT_LINE('Resource/Truppe Type missmatch or cargo does not exist');
+  end if;
+  
+ 
+  return x;
+END CREATE_bew_event;
+-------------------------------------------------------
+create or replace function CREATE_geb_bau
+(
+dorf in number,
+geb_typ number
+) 
+return number
+Is
+x number;
+istruppe number;
+rescnt number;
+dauer number;
+bbt number;
+cur_lvl number;
+
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  select base_buildtime into bbt from geb_typ where id=geb_typ;
+  select lvl into cur_lvl from bau b where b.DID=dorf and b.TID=geb_typ;
+  dauer := bbt * (cur_lvl+1) * 1.75;
+  /*select holz, stein, lehm into h,s,l from resgruppe where id= (select base_build_price from event e where)
+  LET_DORF_PAY();*/
+  x :=event_id.nextval;
+  insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer);-- dauer/24/60/60   checken ob das wohl nicht integer mäßig abgeschnitten wird!!!
+  insert into stat_event(id,dorf,geb_typ) values (x,dorf,GEB_TYP);
+  return x;
+END CREATE_geb_bau;
+--------------------------------------------------------
+create or replace function CREATE_Truppenausbildung
+(
+pdorf in number,
+pcargo number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+h number;
+s number;
+l number;
+numberOfKasserneInDorf number; --kann nur 1 oder 0 sein
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  select t.lanze*30+t.reiter*180 +t.schwert*120 +bogen*60 into r_dauer from truppe t where t.id=pcargo;
+  
+  --missusing variable for engine-data check
+  select COUNT(id) into numberOfKasserneInDorf from geb_typ where geb_typ.NAME='kasserne';
+  if numberOfKasserneInDorf = 0 then
+    RAISE_APPLICATION_ERROR(-20668,'Gebäude typ kasserne does not exist in Database!');
+  end if;
+  
+  --missusing variable to store id
+  select id into numberOfKasserneInDorf from geb_typ where geb_typ.NAME='kasserne';
+  
+  select NVL(MIN(lvl),0) into k_lvl from bau where TID=numberOfKasserneInDorf and DID=pdorf;
+  if k_lvl=0 then
+    RAISE_APPLICATION_ERROR(-20668,'cannot train units without kasserne');
+  else
+  --PREISE FÜR EINHEITEN
+  select t.lanze*4+t.reiter*3 +t.schwert*1 +bogen*3,  t.lanze*0+t.reiter*4 +t.schwert*3 +bogen*2, t.lanze*1+t.reiter*2 +t.schwert*4 +bogen*3  into h,s,l from truppe t where t.id=pcargo;
+  LET_DORF_PAY(pdorf,h,s,l);
+  
+  dauer := (r_dauer*1)/(k_lvl*1.5);
+    x :=event_id.nextval;
+    insert into event(id,BEGINN,DAUER) values(x,CURRENT_TIMESTAMP,dauer);--checken ob das wohl nicht integer mäßig abgeschnitten wird!!!
+    insert into stat_event(id,cargo) values (x,pcargo);
+    end if;
+  return x;
+END CREATE_Truppenausbildung;
+------------------------------------------
+create or replace function CREATE_DORF
+(
+name in varchar2,
+owner varchar2,
+x_pos number,
+y_pos number
+) 
+return number
+Is
+x number;
+dauer number;
+r_dauer number;
+k_lvl number;
+BEGIN
+--base_buildtime * (lvl+1) * 1.75
+  
+  x :=dorf_id.nextval;
+  insert into dorf(id,name,owner,d_location,last_res_update) values(x,name,owner,SDO_GEOMETRY(2001,NULL,SDO_POINT_TYPE(x_pos, y_pos, NULL),NULL,NULL),CURRENT_TIMESTAMP);
+  return x;
+END CREATE_DORF;
+----------------------------------------------------------------
+CREATE OR REPLACE function getDistanceBetweenVillages(Village1 IN SDO_GEOMETRY, Village2 IN SDO_GEOMETRY)
+return number is 
+distance number;
+BEGIN
+	distance := SDO_GEOM.SDO_DISTANCE(Village1, Village2, 0, 'MILE');
+
+	distance := distance * 10;
+
+	return distance;
+END;
+------------------------------------------------------------------
+CREATE OR REPLACE PROCEDURE ATK_RESOLVE 
+(
+  ATK_DORF IN NUMBER 
+, DEF_DORF IN NUMBER 
+, TRUPPE IN NUMBER 
+) AS 
+
+m_id number;
+t_id number;
+atk_def number := 0;
+atk_atk number := 0;
+atk_tmp number;
+tmp number;
+newSchwert number;
+newReiter number;
+newBogen number;
+newlanze number;
+
+BEGIN
+  select m.id into m_id from movable m JOIN Dorf d on m.did = d.id where d.id = DEF_DORF;
+  select t.id into t_id from truppe t JOIN movable m on m.id = t.id where m.id = m_id;
+  select schwert into atk_tmp from truppe where id = t_id;
+  atk_def := atk_def + atk_tmp;
+  select reiter into atk_tmp from truppe where id = t_id;
+  atk_def := atk_def + atk_tmp*2;
+  select bogen into atk_tmp from truppe where id = t_id;
+  atk_def := atk_def + atk_tmp*3;
+  select lanze into atk_tmp from truppe where id = t_id;
+  atk_def := atk_def + atk_tmp*4;
+  
+  select schwert into atk_tmp from truppe where id = TRUPPE;
+  atk_atk := atk_atk + atk_tmp;
+  select reiter into atk_tmp from truppe where id = TRUPPE;
+  atk_atk := atk_atk + atk_tmp*2;
+  select bogen into atk_tmp from truppe where id = TRUPPE;
+  atk_atk := atk_atk + atk_tmp*3;
+  select lanze into atk_tmp from truppe where id = TRUPPE;
+  atk_atk := atk_atk + atk_tmp*4;
+  
+  IF atk_atk > atk_def THEN
+  --all def truppen werden 0
+    atk_tmp := atk_def;
+    select schwert into tmp from truppe where id = TRUPPE;
+    IF tmp <= atk_tmp THEN
+      newSchwert := 0;
+      atk_tmp := atk_tmp - tmp;
+          --restlichen truppen bis 0
+               select reiter into tmp from truppe where id = TRUPPE;
+               tmp := tmp*2;
+               IF tmp <= atk_tmp THEN
+                   newReiter := 0;
+                   atk_tmp := atk_tmp - tmp;
+                   select bogen into tmp from truppe where id = TRUPPE;
+                   tmp := tmp*3;
+                   IF tmp <= atk_tmp THEN
+                      newBogen := 0;
+                      atk_tmp := atk_tmp - tmp;
+                      select lanze into tmp from truppe where id = TRUPPE;
+                      tmp := tmp*4;
+                      IF tmp <= atk_tmp THEN
+                          newLanze := 0;
+                          atk_tmp := atk_tmp - tmp;
+                      ELSE
+                          newLanze := tmp-atk_tmp;
+                      END IF;
+                   ELSE
+                        newBogen := tmp-atk_tmp;
+                        select lanze into tmp from truppe where id = TRUPPE;
+                        newLanze := tmp;
+                   END IF;
+              ELSE
+                   newReiter := tmp-atk_tmp;
+                    select bogen into tmp from truppe where id = TRUPPE;
+                    newBogen := tmp;
+                    select lanze into tmp from truppe where id = TRUPPE;
+                    newLanze := tmp;
+              END IF;
+    ELSE
+      newSchwert := tmp-atk_tmp;
+      select reiter into tmp from truppe where id = TRUPPE;
+      newReiter := tmp;
+      select bogen into tmp from truppe where id = TRUPPE;
+      newBogen := tmp;
+      select lanze into tmp from truppe where id = TRUPPE;
+      newLanze := tmp;
+    END IF;
+    update truppe SET schwert=newSchwert, reiter=newReiter, bogen=newBogen, lanze=newLanze where id = TRUPPE;
+    --Loot here mehr oder weniger nur new event für alle ressis von dorf 1 move to dorf 2 und truppen wd zurück
+    update truppe SET schwert=0, reiter=0, bogen=0, lanze=0 where id = t_id;
+  ELSE
+    --umgekehrt
+     --all atk truppen werden 0
+    atk_tmp := atk_atk;
+    select schwert into tmp from truppe where id = t_id;
+    IF tmp <= atk_tmp THEN
+      newSchwert := 0;
+      atk_tmp := atk_tmp - tmp;
+          --restlichen truppen bis 0
+               select reiter into tmp from truppe where id = t_id;
+               tmp := tmp*2;
+               IF tmp <= atk_tmp THEN
+                   newReiter := 0;
+                   atk_tmp := atk_tmp - tmp;
+                   select bogen into tmp from truppe where id = t_id;
+                   tmp := tmp*3;
+                   IF tmp <= atk_tmp THEN
+                      newBogen := 0;
+                      atk_tmp := atk_tmp - tmp;
+                      select lanze into tmp from truppe where id = t_id;
+                      tmp := tmp*4;
+                      IF tmp <= atk_tmp THEN
+                          newLanze := 0;
+                          atk_tmp := atk_tmp - tmp;
+                      ELSE
+                          newLanze := tmp-atk_tmp;
+                      END IF;
+                   ELSE
+                        newBogen := tmp-atk_tmp;
+                        select lanze into tmp from truppe where id = t_id;
+                        newLanze := tmp;
+                   END IF;
+              ELSE
+                   newReiter := tmp-atk_tmp;
+                    select bogen into tmp from truppe where id = t_id;
+                    newBogen := tmp;
+                    select lanze into tmp from truppe where id = t_id;
+                    newLanze := tmp;
+              END IF;
+    ELSE
+      newSchwert := tmp-atk_tmp;
+      select reiter into tmp from truppe where id = t_id;
+      newReiter := tmp;
+      select bogen into tmp from truppe where id = t_id;
+      newBogen := tmp;
+      select lanze into tmp from truppe where id = t_id;
+      newLanze := tmp;
+    END IF;
+    update truppe SET schwert=0, reiter=0, bogen=0, lanze=0 where id = TRUPPE;
+    update truppe SET schwert=newSchwert, reiter=newReiter, bogen=newBogen, lanze=newLanze where id = t_id;
+  END IF;
+  
+  
+END ATK_RESOLVE;
+--------------------------------------------------------
+create or replace function split_RESOURCES 
+(
+  rid IN NUMBER 
+, h number,
+l number,
+s number
+) return number iS 
+
+ch number;
+cl number;
+cs number;
+x number;
+BEGIN
+  select holz,stein,lehm into ch,cs,cl from RESGRUPPE where ID = rid;
+  
+  if (ch >=h and cl>=l and cs>=s ) and not (ch =h and cl=l and cs=s )  then
+    update resgruppe set holz=holz-h, stein = stein-s, lehm = lehm-l where id=rid;
+    x := Create_Resource(h,s,l);
+  elsif ch=h and cl=cl and cs=cs then
+    x := rid;
+  else
+    x := -1;      
+  end if;
+  
+ return x;
+END split_RESOURCES;
+
+--------------------------------------------------
+create or replace function CREATE_SPIELER 
+(
+unam in varchar2,
+passwd varchar2
+) 
+return varchar2
+Is
+x number;
+BEGIN
+
+  insert into spieler(uname,clan,passwd_hash) values (unam,null,passwd);
+  return unam;
+  
+  exception
+    when DUP_VAL_ON_INDEX then
+    return '-1';
+
+
+END CREATE_SPIELER;
+--------------------------------------------------
+create or replace procedure CREATE_NEW_USER
+(
+uname in varchar2,
+d_name in varchar2,
+passwd_hash varchar2
+) 
+As
+x varchar(20);
+ndid number;
+resid number;
+BEGIN
+  
+  x := CREATE_SPIELER (uname,passwd_hash);
+  
+  if x = null then
+    RAISE_APPLICATION_ERROR(-24711,'username not unique');
+  else 
+     ndid:=Create_Dorf(d_name,x,round(dbms_random.value(10,-10)),round(dbms_random.value(10,-10))); --alle dörfer sind aktuell noch auf position 1,1. später noch ändern
+     resid:=create_resource(100,100,100);
+     update movable set did=ndid where id=resid;
+     
+     resid:=create_truppe(10,10,10,10);
+     update truppe set owner=x where id=resid;
+     update movable set did=ndid where id=resid;--'Hauptgebäude'
+     
+     --HIER SIND DIE STANDARDT GEBÄUDE
+     for eintrag in (select id from geb_typ where name in ('Hauptgebäude','Lehmgrube','Holzfäller') ) LOOP
+      baue_gebäude_in_dorf(eintrag.id,ndid);
+     end loop;
+     
+     
+ end if;
+ 
+  exception
+     WHEN OTHERS THEN
+      IF SQLCODE = -24712 THEN
+        RAISE_APPLICATION_ERROR(-24713,'database not inicialised appropriate. reason: specified gebäudetyp does not exist');
+      END IF;
+
+ 
+END CREATE_NEW_USER;
+-----------------------------------------------
+create or replace procedure BAUE_GEBÄUDE_IN_DORF
+(
+geb_id in number,
+did123 in number
+) 
+As
+x varchar(20);
+tid123 number;
+curr_lvl number;
+BEGIN
+  
+  tid123:=geb_id;
+  if tid123 = null then
+    RAISE_APPLICATION_ERROR(-24712,'specified gebäudetyp does not exist');
+  end if;
+  
+  select NVL (MIN(b.lvl),1) into curr_lvl from bau b where b.tid=tid123 and b.did=did123;
+  
+  /*if curr_lvl = null then
+    curr_lvl := 1;
+  end if;*/
+
+    update bau set lvl=curr_lvl+1 where did=did123 and tid=tid123;
+    --insert into bau(did,tid,lvl) values(did,tid,curr_lvl);
+END BAUE_GEBÄUDE_IN_DORF;
+------------------------------------------------------------
+
+create or replace procedure CREATE_GEBÄUDE_TYP
+(
+geb_name in varchar2,
+base_build_time in number
+) 
+As
+x varchar(20);
+BEGIN
+  insert into geb_typ(id,base_buildtime,name)values(geb_typ_id.nextval,base_build_time,geb_name);
+END CREATE_GEBÄUDE_TYP;
+------------------------------------------------------------
+create or replace procedure POST_COMMENT
+(
+board in number,
+text in varchar2,
+op in varchar2
+) 
+As
+x varchar(20);
+BEGIN
+  insert into kommentar(id,board,text,op,post_time)values(kommentar_id.nextval,board,text,op,CURRENT_TIMESTAMP);
+END POST_COMMENT;
+----------------------------------------------------
+create or replace procedure NEW_BOARD
+(
+name in varchar2,
+text in varchar2,
+op in varchar2
+) 
+As
+x varchar(20);
+BEGIN
+  insert into board(id,name,text,op,post_time)values(board_id.nextval,name,text,op,CURRENT_TIMESTAMP);
+END NEW_BOARD;
+---------------------------------------------------
+create or replace procedure CREATE_CLAN
+(
+name varchar2
+) 
+As
+x number;
+BEGIN
+
+  insert into clan(id,name) values (clan_id.nextval,name);
+  
+END CREATE_CLAN;
+
+------------------------------------------------
+create or replace function GET_BUILD_TIME
+(
+geb_id number,
+did number
+) 
+return number
+Is
+curr_lvl number;
+base_buildt number;
+BEGIN
+select MIN(lvl) into curr_lvl from bau b where b.tid=geb_id and b.did=did;
+select base_buildtime into base_buildt from geb_typ where id=geb_id;
+return base_buildt * (curr_lvl+1) * 1.5;
+END GET_BUILD_TIME;
+
+---------------------------------------
+create or replace PROCEDURE BUILD_COMMAND 
+(
+  DID IN NUMBER 
+, GEB_NAME IN VARCHAR2 
+) AS 
+x number;
+dauer number;
+geb_id number;
+h number;
+s number;
+l number;
+b_res_id number;
+curr_level number;
+BEGIN
+  
+  dauer := -1;
+  
+  select MIN(gt.id),MIN(gt.base_build_price) into geb_id,b_res_id  from geb_typ gt where gt.NAME like '%'||geb_name||'%';
+  
+  select holz,stein,lehm into h,s,l from resgruppe where id=b_res_id;
+  select NVL (MIN(b.lvl),1) into curr_level from bau b where b.tid=geb_id and b.did=did;
+  --select lvl into curr_level from geb_typ where id=geb_id;
+  --base_build_p:= base_build_p * (lvl+1) * 1.0;
+  dbms_output.put_line('did'||did||'res'||s* (curr_level+1) * 1.5);
+  --LET_DORF_PAY(DID,h* (curr_level+1) * 1.5,s* (curr_level+1) * 1.5,l* (curr_level+1) * 1.5);
+   LET_DORF_PAY(DID,h,s,l);
+ 
+  x := event_id.nextval;
+  dauer := GET_BUILD_TIME(geb_id,did);
+  insert into event(id,beginn,dauer) values(x,CURRENT_TIMESTAMP,dauer);
+  insert into stat_event(id,dorf,geb_typ,cargo)values(x,did,geb_id,null);
+  
+  /*EXCEPTION  -- exception handlers begin
+   WHEN -24667 THEN  -- cant afford
+      INSERT INTO stats (symbol, ratio) VALUES ('XYZ', NULL);*/
+END BUILD_COMMAND;
+-----------------------------------------
+create or replace PROCEDURE LET_DORF_PAY 
+(
+did111 number
+,
+  HOLZ_Cost IN NUMBER 
+, STEIN_Cost IN NUMBER 
+, LEHM_Cost IN NUMBER 
+) As
+success number;
+h111 number;
+s111 number; 
+l111 number;
+mid number;
+BEGIN
+  --select MIN(r.holz),Min(r.stein),Min(r.lehm),MIN(r.id) into h111,s111,l111,mid from resgruppe r inner join movable m on r.id=m.id where m.did=did; 
+  select MIN(r.holz),Min(r.stein),Min(r.lehm),MIN(r.id) into h111,s111,l111,mid from resgruppe r inner join movable m on r.id=m.id where m.did=did111; 
+  
+  select COUNT(r.holz) into success from resgruppe r inner join movable m on r.id=m.id where m.did=did111; 
+  dbms_output.put_line(' >>'||success||'<<<<'||HOLZ_Cost||' < '||h111||'  '||STEIN_Cost||'<'||s111||'  '||LEHM_Cost||'<'||l111);
+  
+  if HOLZ_Cost <= h111 and STEIN_Cost<=s111 and LEHM_Cost<=l111 then
+     update resgruppe set holz=h111-HOLZ_Cost, stein=s111-STEIN_Cost,lehm=l111-LEHM_Cost where id=mid; 
+  else
+    RAISE_APPLICATION_ERROR(-20667,'cannot afford payment');
+  end if;
+END LET_DORF_PAY;
+-----------------------------------------
+create or replace procedure update_events
+AS
+counter1 integer;
+counter2 integer;
+counter3 integer;
+counter4 integer;
+artH varchar2(10);
+TYPE bew IS TABLE OF bew_event%ROWTYPE;
+TYPE res IS TABLE OF resgruppe%ROWTYPE;
+bh bew;
+rh res;
+rh2 res;
+holzH integer;
+steinH integer;
+lehmH integer;
+intH integer;
+intH2 integer;
+intH3 integer;
+intH4 integer;
+intH5 integer;
+h1 integer;
+h2 integer;
+h3 integer;
+h4 integer;
+h5 integer;
+
+BEGIN
+DBMS_OUTPUT.PUT_LINE('beginning update');
+  for ev in (select * from Event) loop
+    DBMS_OUTPUT.PUT_LINE('is event');
+    if IS_IN_PAST(ev.BEGINN + (ev.DAUER/24/60/60))=1 then
+        DBMS_OUTPUT.PUT_LINE('is in past');
+        select Count(*) into counter1 FROM BEW_EVENT b WHERE b.id = ev.id;
+        IF counter1 > 0 then
+          --Bewegungsevent
+            SELECT art into artH from BEW_EVENT b where b.id = ev.id;            
+            select * bulk collect into bh from BEW_EVENT b where b.id = ev.id;
+            if artH = 'res' then
+              --PROC FÜR RES ANGEKOMMEN (SPLIT ADD UPDATE)
+              select r.* bulk collect into rh from resgruppe r join movable m on r.id=m.id join dorf d on m.did=d.id where bh(0).von_dorf = d.id;
+              select r.* bulk collect into rh2 from resgruppe r join movable m on r.id=m.id join dorf d on m.did=d.id where bh(0).nach_dorf = d.id;
+              select r.holz into holzH from resgruppe r where r.id = bh(0).cargo;
+              select r.stein into steinH from resgruppe r where r.id = bh(0).cargo;
+              select r.lehm into lehmH from resgruppe r where r.id = bh(0).cargo;
+              
+              update (select r.holz as oldholz, r.stein as oldstein,r.lehm as oldlehm from resgruppe r where r.id = rh(0).id) up set up.oldholz = up.oldholz - holzH, up.oldstein = up.oldstein - steinH, up.oldlehm = up.oldlehm - lehmH;
+              update (select r.holz as oldholz, r.stein as oldstein,r.lehm as oldlehm from resgruppe r where r.id = rh2(0).id) up set up.oldholz = up.oldholz + holzH, up.oldstein = up.oldstein + steinH, up.oldlehm = up.oldlehm + lehmH;
+            end if;
+            if artH = 'sup' then
+              -- PROC FÜR ADD TRUPPE DORF 1 AND DEL TRUPPE DORF 2
+              update (select t.schwert as oldschwert, t.reiter as oldreiter, t.bogen as oldbogen, t.lanze as oldlanze from truppe t join movable m on t.id = m.id join dorf d on m.did=d.id where bh(0).von_dorf = d.id) up set up.oldschwert = up.oldschwert - (select t.schwert from truppe t where t.id = bh(0).cargo), up.oldreiter = up.oldreiter - (select t.reiter from truppe t where t.id = bh(0).cargo), up.oldbogen = up.oldbogen - (select t.bogen from truppe t where t.id = bh(0).cargo), up.oldlanze = up.oldlanze - (select t.lanze from truppe t where t.id = bh(0).cargo);                            
+              update (select t.schwert as oldschwert, t.reiter as oldreiter, t.bogen as oldbogen, t.lanze as oldlanze from truppe t join movable m on t.id = m.id join dorf d on m.did=d.id where bh(0).nach_dorf = d.id) up set up.oldschwert = up.oldschwert + (select t.schwert from truppe t where t.id = bh(0).cargo), up.oldreiter = up.oldreiter + (select t.reiter from truppe t where t.id = bh(0).cargo), up.oldbogen = up.oldbogen + (select t.bogen from truppe t where t.id = bh(0).cargo), up.oldlanze = up.oldlanze + (select t.lanze from truppe t where t.id = bh(0).cargo);              
+            end if;
+            if artH = 'atk' then
+              SELECT VON_DORF into intH from BEW_EVENT b where b.id = ev.id;
+              SELECT NACH_DORF into intH2 from BEW_EVENT b where b.id = ev.id;
+              SELECT t.id into intH3 from TRUPPE t JOIN BEW_EVENT b on b.cargo = t.id where t.id=ev.id;
+              ATK_RESOLVE(intH,intH2, intH3 );
+            end if;
+            DELETE FROM BEW_EVENT e where e.id = ev.id;
+        END IF;
+        SELECT COUNT(*) into counter2 FROM STAT_EVENT s WHERE s.id = ev.id;
+        if counter2 > 0 then
+          --STAT EVENT
+            SELECT Count(GEB_TYP) into counter3 from STAT_EVENT s WHERE s.id = ev.id;
+            SELECT Count(CARGO) into counter4 from STAT_EVENT s WHERE s.id = ev.id;
+            if counter3 > 0 then
+              -- PROC FÜR LVL up BUILDING/BUILD BUILDING
+              SELECT GEB_TYP into intH4 from STAT_EVENT s WHERE s.id = ev.id;
+              SELECT dorf into intH5 from STAT_EVENT s WHERE s.id = ev.id;
+              BAUE_GEBÄUDE_IN_DORF(intH4,intH5);
+            end if;
+            if counter4 > 0 then
+              SELECT dorf into h1 from STAT_EVENT s where s.id = ev.id;
+              SELECT SCHWERT into h2 from Truppe t JOIN STAT_EVENT s on s.cargo=t.id where s.id=ev.id;
+              SELECT REITER into h3 from Truppe t JOIN STAT_EVENT s on s.cargo=t.id where s.id=ev.id;
+              SELECT BOGEN into h4 from Truppe t JOIN STAT_EVENT s on s.cargo=t.id where s.id=ev.id;
+              SELECT LANZE into h5 from Truppe t JOIN STAT_EVENT s on s.cargo=t.id where s.id=ev.id;
+              ADD_TRUPPE_TO_DORF(h1, h2,h3,h4,h5);
+            end if;
+            DELETE FROM STAT_EVENT e where e.id = ev.id;
+        END IF;
+        DELETE FROM EVENT e where e.id = ev.id;
+    end if;
+    
+  end loop;
+
+
+
+
+END;
